@@ -39,6 +39,7 @@ const (
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
 	client kubernetes.Interface
+	nodeID string
 	vgName string
 }
 
@@ -56,12 +57,18 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	}
 
 	volumeId := req.GetName()
-
 	response := &csi.CreateVolumeResponse{
 		Volume: &csi.Volume{
 			Id:            volumeId,
 			CapacityBytes: req.GetCapacityRange().GetRequiredBytes(),
 			Attributes:    req.GetParameters(),
+			AccessibleTopology: []*csi.Topology{
+				{
+					Segments: map[string]string{
+						NodeLabelKey: cs.nodeID,
+					},
+				},
+			},
 		},
 	}
 	return response, nil

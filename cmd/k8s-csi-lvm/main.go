@@ -47,7 +47,6 @@ func main() {
 }
 
 func handle() {
-
 	config, err := buildConfig(*kubeconfig)
 	if err != nil {
 		glog.Error(err.Error())

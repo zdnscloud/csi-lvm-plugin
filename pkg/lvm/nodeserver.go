@@ -58,10 +58,6 @@ func (ns *nodeServer) createVolume(ctx context.Context, volumeId string) (*v1.Pe
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Failed to get node by nodeId %s: %s", ns.GetNodeID(), err))
 	}
 
-	nodeAffinityAnn, err := generateNodeAffinity(node)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Failed to generate node affinity annotations for %v: %v", node.GetName(), err))
-	}
 	cap := pv.Spec.Capacity[v1.ResourceStorage]
 	size := cap.Value()
 
@@ -90,16 +86,12 @@ func (ns *nodeServer) createVolume(ctx context.Context, volumeId string) (*v1.Pe
 			err)
 	}
 
-	pv.Spec.NodeAffinity = nodeAffinityAnn
 	pv.Annotations[lvmNodeAnnKey] = node.GetName()
 	return updatePV(ns.client, pv)
 }
 
 func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublishVolumeRequest) (*csi.NodePublishVolumeResponse, error) {
 	targetPath := req.GetTargetPath()
-	// fsType := req.GetVolumeCapability().GetMount().GetFsType()
-	// devicePath := req.GetPublishInfo()["DevicePath"]
-
 	volumeId := req.GetVolumeId()
 	devicePath := filepath.Join("/dev/", ns.vgName, volumeId)
 

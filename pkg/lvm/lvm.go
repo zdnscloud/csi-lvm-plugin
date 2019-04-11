@@ -17,9 +17,9 @@ limitations under the License.
 package lvm
 
 import (
+	"github.com/container-storage-interface/spec/lib/go/csi/v0"
 	"github.com/golang/glog"
 	"k8s.io/client-go/kubernetes"
-	"github.com/container-storage-interface/spec/lib/go/csi/v0"
 
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
 )
@@ -51,20 +51,21 @@ func NewIdentityServer(d *csicommon.CSIDriver) *identityServer {
 	}
 }
 
-func NewControllerServer(d *csicommon.CSIDriver, c kubernetes.Interface, vgName string) *controllerServer {
+func NewControllerServer(d *csicommon.CSIDriver, c kubernetes.Interface, nodeID, vgName string) *controllerServer {
 	return &controllerServer{
 		DefaultControllerServer: csicommon.NewDefaultControllerServer(d),
 		client:                  c,
-		vgName:            vgName,
+		vgName:                  vgName,
+		nodeID:                  nodeID,
 	}
 }
 
-func NewNodeServer(d *csicommon.CSIDriver, c kubernetes.Interface, nodeID string, vgName string) *nodeServer {
+func NewNodeServer(d *csicommon.CSIDriver, c kubernetes.Interface, nodeID, vgName string) *nodeServer {
 	return &nodeServer{
 		DefaultNodeServer: csicommon.NewDefaultNodeServer(d),
 		client:            c,
-		nodeID:            nodeID,
 		vgName:            vgName,
+		nodeID:            nodeID,
 	}
 }
 
@@ -83,7 +84,7 @@ func (lvm *lvm) Run(driverName, nodeID, endpoint string, vgName string) {
 	// Create GRPC servers
 	lvm.ids = NewIdentityServer(lvm.driver)
 	lvm.ns = NewNodeServer(lvm.driver, lvm.client, nodeID, vgName)
-	lvm.cs = NewControllerServer(lvm.driver, lvm.client, vgName)
+	lvm.cs = NewControllerServer(lvm.driver, lvm.client, nodeID, vgName)
 
 	server := csicommon.NewNonBlockingGRPCServer()
 	server.Start(endpoint, lvm.ids, lvm.cs, lvm.ns)
