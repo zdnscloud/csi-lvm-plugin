@@ -1,14 +1,15 @@
 package lvm
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
 
+	"github.com/zdnscloud/gok8s/client"
 	"k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
+	k8stypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/kubernetes/pkg/kubelet/apis"
 	utilnode "k8s.io/kubernetes/pkg/util/node"
 )
@@ -19,7 +20,7 @@ const (
 	lvmdPort      = "1736"
 )
 
-func getLVMDAddr(client kubernetes.Interface, node string) (string, error) {
+func getLVMDAddr(client client.Client, node string) (string, error) {
 	n, err := getNode(client, node)
 	if err != nil {
 		return "", err
@@ -31,19 +32,32 @@ func getLVMDAddr(client kubernetes.Interface, node string) (string, error) {
 	return ip.String() + ":" + lvmdPort, nil
 }
 
-func updatePV(client kubernetes.Interface, pv *v1.PersistentVolume) (*v1.PersistentVolume, error) {
-	return client.CoreV1().PersistentVolumes().Update(pv)
+func updatePV(client client.Client, pv *v1.PersistentVolume) (*v1.PersistentVolume, error) {
+	err := client.Update(context.TODO(), pv)
+	return pv, err
 }
 
-func getPV(client kubernetes.Interface, volumeId string) (*v1.PersistentVolume, error) {
-	return client.CoreV1().PersistentVolumes().Get(volumeId, metav1.GetOptions{})
+func getPV(client client.Client, volumeId string) (*v1.PersistentVolume, error) {
+	var pv v1.PersistentVolume
+	err := client.Get(context.TODO(), k8stypes.NamespacedName{"", volumeId}, &pv)
+	if err != nil {
+		return nil, err
+	} else {
+		return &pv, nil
+	}
 }
 
-func getNode(client kubernetes.Interface, nodeId string) (*v1.Node, error) {
-	return client.CoreV1().Nodes().Get(nodeId, metav1.GetOptions{})
+func getNode(client client.Client, nodeId string) (*v1.Node, error) {
+	var node v1.Node
+	err := client.Get(context.TODO(), k8stypes.NamespacedName{"", nodeId}, &node)
+	if err != nil {
+		return nil, err
+	} else {
+		return &node, nil
+	}
 }
 
-func getVolumeNode(client kubernetes.Interface, volumeId string) (string, error) {
+func getVolumeNode(client client.Client, volumeId string) (string, error) {
 	pv, err := getPV(client, volumeId)
 	if err != nil {
 		return "", err

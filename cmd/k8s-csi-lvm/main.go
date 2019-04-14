@@ -22,9 +22,8 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvm"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
+	"github.com/zdnscloud/gok8s/client"
+	"github.com/zdnscloud/gok8s/client/config"
 )
 
 func init() {
@@ -36,7 +35,6 @@ var (
 	driverName = flag.String("drivername", "k8s-csi-lvm", "name of the driver")
 	nodeID     = flag.String("nodeid", "", "node id")
 	vgName     = flag.String("vgname", "k8s", "volume group name")
-	kubeconfig = flag.String("kubeconfig", "", "Absolute path to the kubeconfig file. Required only when running out of cluster.")
 )
 
 func main() {
@@ -47,25 +45,18 @@ func main() {
 }
 
 func handle() {
-	config, err := buildConfig(*kubeconfig)
+	config, err := config.GetConfig()
 	if err != nil {
 		glog.Error(err.Error())
 		os.Exit(1)
 	}
 
-	clientset, err := kubernetes.NewForConfig(config)
+	cli, err := client.New(config, client.Options{})
 	if err != nil {
 		glog.Error(err.Error())
 		os.Exit(1)
 	}
 
-	driver := lvm.GetLVMDriver(clientset)
+	driver := lvm.GetLVMDriver(cli)
 	driver.Run(*driverName, *nodeID, *endpoint, *vgName)
-}
-
-func buildConfig(kubeconfig string) (*rest.Config, error) {
-	if kubeconfig != "" {
-		return clientcmd.BuildConfigFromFlags("", kubeconfig)
-	}
-	return rest.InClusterConfig()
 }

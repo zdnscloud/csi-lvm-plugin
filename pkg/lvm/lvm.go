@@ -17,16 +17,16 @@ limitations under the License.
 package lvm
 
 import (
-	"github.com/container-storage-interface/spec/lib/go/csi/v0"
+	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/golang/glog"
-	"k8s.io/client-go/kubernetes"
+	"github.com/zdnscloud/gok8s/client"
 
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
 )
 
 type lvm struct {
 	driver *csicommon.CSIDriver
-	client kubernetes.Interface
+	client client.Client
 
 	ids *identityServer
 	ns  *nodeServer
@@ -41,7 +41,7 @@ var (
 	vendorVersion = "0.3.0"
 )
 
-func GetLVMDriver(client kubernetes.Interface) *lvm {
+func GetLVMDriver(client client.Client) *lvm {
 	return &lvm{client: client}
 }
 
@@ -51,7 +51,7 @@ func NewIdentityServer(d *csicommon.CSIDriver) *identityServer {
 	}
 }
 
-func NewControllerServer(d *csicommon.CSIDriver, c kubernetes.Interface, nodeID, vgName string) *controllerServer {
+func NewControllerServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName string) *controllerServer {
 	return &controllerServer{
 		DefaultControllerServer: csicommon.NewDefaultControllerServer(d),
 		client:                  c,
@@ -60,7 +60,7 @@ func NewControllerServer(d *csicommon.CSIDriver, c kubernetes.Interface, nodeID,
 	}
 }
 
-func NewNodeServer(d *csicommon.CSIDriver, c kubernetes.Interface, nodeID, vgName string) *nodeServer {
+func NewNodeServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName string) *nodeServer {
 	return &nodeServer{
 		DefaultNodeServer: csicommon.NewDefaultNodeServer(d),
 		client:            c,

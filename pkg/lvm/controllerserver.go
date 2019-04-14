@@ -20,12 +20,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/zdnscloud/gok8s/client"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"k8s.io/client-go/kubernetes"
 
-	"github.com/container-storage-interface/spec/lib/go/csi/v0"
+	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/golang/glog"
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvmd"
@@ -38,7 +38,7 @@ const (
 
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
-	client kubernetes.Interface
+	client client.Client
 	nodeID string
 	vgName string
 }
@@ -59,9 +59,9 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	volumeId := req.GetName()
 	response := &csi.CreateVolumeResponse{
 		Volume: &csi.Volume{
-			Id:            volumeId,
+			VolumeId:      volumeId,
 			CapacityBytes: req.GetCapacityRange().GetRequiredBytes(),
-			Attributes:    req.GetParameters(),
+			VolumeContext: req.GetParameters(),
 			AccessibleTopology: []*csi.Topology{
 				{
 					Segments: map[string]string{
@@ -103,4 +103,8 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 	}
 	response := &csi.DeleteVolumeResponse{}
 	return response, nil
+}
+
+func (cs *controllerServer) ControllerExpandVolume(ctx context.Context, req *csi.ControllerExpandVolumeRequest) (*csi.ControllerExpandVolumeResponse, error) {
+	return &csi.ControllerExpandVolumeResponse{}, nil
 }
