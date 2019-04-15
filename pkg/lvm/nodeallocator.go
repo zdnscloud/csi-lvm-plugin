@@ -102,7 +102,7 @@ func (a *NodeAllocator) OnCreate(e event.CreateEvent) (handler.Result, error) {
 	v, ok := n.Labels[ZkeStorageLabel]
 	if ok && v == "true" {
 		addr := n.Annotations[ZkeInternalIPAnnKey]
-		freesize, err := a.getFreeSize(addr)
+		freesize, err := a.getFreeSize(addr + ":" + lvmdPort)
 		if err == nil {
 			a.lock.Lock()
 			a.addNode(&Node{
