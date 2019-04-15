@@ -22,6 +22,7 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvm"
+	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 	"github.com/zdnscloud/gok8s/client/config"
 )
@@ -57,6 +58,15 @@ func handle() {
 		os.Exit(1)
 	}
 
+	stop := make(chan struct{})
+	cache, err := cache.New(config, cache.Options{})
+	if err != nil {
+		glog.Error(err.Error())
+		os.Exit(1)
+	}
+	go cache.Start(stop)
+	cache.WaitForCacheSync(stop)
+
 	driver := lvm.GetLVMDriver(cli)
-	driver.Run(*driverName, *nodeID, *endpoint, *vgName)
+	driver.Run(*driverName, *nodeID, *endpoint, *vgName, cache)
 }

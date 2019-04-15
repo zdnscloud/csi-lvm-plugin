@@ -14,10 +14,15 @@ import (
 	"google.golang.org/grpc/connectivity"
 )
 
+var (
+	ErrVGNotExist = errors.New("vg doesn't exist")
+)
+
 type LVMConnection interface {
-	GetLV(ctx context.Context, volGroup string, volumeId string) (string, error)
+	GetLV(ctx context.Context, volGroup string, volumeId string) (string, uint64, error)
 	CreateLV(ctx context.Context, opt *LVMOptions) (string, error)
 	RemoveLV(ctx context.Context, volGroup string, volumeId string) error
+	GetFreeSizeOfVG(ctx context.Context, vgName string) (uint64, error)
 
 	Close() error
 }
@@ -100,22 +105,22 @@ func (c *lvmConnection) CreateLV(ctx context.Context, opt *LVMOptions) (string, 
 	return rsp.GetCommandOutput(), nil
 }
 
-func (c *lvmConnection) GetLV(ctx context.Context, volGroup string, volumeId string) (string, error) {
+func (c *lvmConnection) GetLV(ctx context.Context, volGroup string, volumeId string) (string, uint64, error) {
 	client := lvmd.NewLVMClient(c.conn)
-
 	req := lvmd.ListLVRequest{
 		VolumeGroup: fmt.Sprintf("%s/%s", volGroup, volumeId),
 	}
-
 	rsp, err := client.ListLV(ctx, &req)
-
 	if err != nil {
-		return "", err
+		return "", 0, err
 	}
-	if len(rsp.GetVolumes()) <= 0 {
-		return "", errors.New("Volume %v not exists")
+
+	lvs := rsp.GetVolumes()
+	if len(lvs) != 1 {
+		return "", 0, errors.New("Volume %v not exists")
 	}
-	return rsp.GetVolumes()[0].String(), nil
+	lv := lvs[0]
+	return lv.GetName(), lv.GetSize(), nil
 }
 
 func (c *lvmConnection) RemoveLV(ctx context.Context, volGroup string, volumeId string) error {
@@ -129,6 +134,22 @@ func (c *lvmConnection) RemoveLV(ctx context.Context, volGroup string, volumeId 
 	rsp, err := client.RemoveLV(ctx, &req)
 	glog.V(5).Infof("removeLV output: %v", rsp.GetCommandOutput())
 	return err
+}
+
+func (c *lvmConnection) GetFreeSizeOfVG(ctx context.Context, vgName string) (uint64, error) {
+	client := lvmd.NewLVMClient(c.conn)
+	req := lvmd.ListVGRequest{}
+	rsp, err := client.ListVG(context.TODO(), &req)
+	if err != nil {
+		return 0, err
+	}
+
+	for _, vg := range rsp.VolumeGroups {
+		if vg.Name == vgName {
+			return vg.FreeSize, nil
+		}
+	}
+	return 0, ErrVGNotExist
 }
 
 func logGRPC(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {

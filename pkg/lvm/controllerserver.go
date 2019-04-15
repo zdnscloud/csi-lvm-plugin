@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
@@ -38,9 +39,18 @@ const (
 
 type controllerServer struct {
 	*csicommon.DefaultControllerServer
-	client client.Client
-	nodeID string
-	vgName string
+	client    client.Client
+	vgName    string
+	allocator *NodeAllocator
+}
+
+func NewControllerServer(d *csicommon.CSIDriver, c client.Client, vgName string, cache cache.Cache) *controllerServer {
+	return &controllerServer{
+		DefaultControllerServer: csicommon.NewDefaultControllerServer(d),
+		client:                  c,
+		vgName:                  vgName,
+		allocator:               NewNodeAllocator(cache, vgName),
+	}
 }
 
 func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVolumeRequest) (*csi.CreateVolumeResponse, error) {
@@ -57,15 +67,21 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	}
 
 	volumeId := req.GetName()
+	requireBytes := req.GetCapacityRange().GetRequiredBytes()
+	node, err := cs.allocator.AllocateNodeForRequest(uint64(requireBytes))
+	if err != nil {
+		return nil, err
+	}
+
 	response := &csi.CreateVolumeResponse{
 		Volume: &csi.Volume{
 			VolumeId:      volumeId,
-			CapacityBytes: req.GetCapacityRange().GetRequiredBytes(),
+			CapacityBytes: requireBytes,
 			VolumeContext: req.GetParameters(),
 			AccessibleTopology: []*csi.Topology{
 				{
 					Segments: map[string]string{
-						NodeLabelKey: cs.nodeID,
+						NodeLabelKey: node,
 					},
 				},
 			},
@@ -92,15 +108,17 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 			return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to connect to %v: %v", addr, err))
 		}
 
-		if _, err := conn.GetLV(ctx, cs.vgName, vid); err == nil {
+		if _, size, err := conn.GetLV(ctx, cs.vgName, vid); err == nil {
 			if err := conn.RemoveLV(ctx, cs.vgName, vid); err != nil {
 				return nil, status.Errorf(
 					codes.Internal,
 					"Failed to remove volume: err=%v",
 					err)
 			}
+			cs.allocator.Release(size, node)
 		}
 	}
+
 	response := &csi.DeleteVolumeResponse{}
 	return response, nil
 }

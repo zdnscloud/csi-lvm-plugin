@@ -19,6 +19,7 @@ package lvm
 import (
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/golang/glog"
+	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
@@ -51,15 +52,6 @@ func NewIdentityServer(d *csicommon.CSIDriver) *identityServer {
 	}
 }
 
-func NewControllerServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName string) *controllerServer {
-	return &controllerServer{
-		DefaultControllerServer: csicommon.NewDefaultControllerServer(d),
-		client:                  c,
-		vgName:                  vgName,
-		nodeID:                  nodeID,
-	}
-}
-
 func NewNodeServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName string) *nodeServer {
 	return &nodeServer{
 		DefaultNodeServer: csicommon.NewDefaultNodeServer(d),
@@ -69,7 +61,7 @@ func NewNodeServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName strin
 	}
 }
 
-func (lvm *lvm) Run(driverName, nodeID, endpoint string, vgName string) {
+func (lvm *lvm) Run(driverName, nodeID, endpoint string, vgName string, cache cache.Cache) {
 	glog.Infof("Driver: %v ", driverName)
 
 	// Initialize default library driver
@@ -84,7 +76,7 @@ func (lvm *lvm) Run(driverName, nodeID, endpoint string, vgName string) {
 	// Create GRPC servers
 	lvm.ids = NewIdentityServer(lvm.driver)
 	lvm.ns = NewNodeServer(lvm.driver, lvm.client, nodeID, vgName)
-	lvm.cs = NewControllerServer(lvm.driver, lvm.client, nodeID, vgName)
+	lvm.cs = NewControllerServer(lvm.driver, lvm.client, vgName, cache)
 
 	server := csicommon.NewNonBlockingGRPCServer()
 	server.Start(endpoint, lvm.ids, lvm.cs, lvm.ns)
