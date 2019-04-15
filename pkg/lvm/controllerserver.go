@@ -27,8 +27,8 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"github.com/golang/glog"
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
+	"github.com/zdnscloud/csi-lvm-plugin/logger"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvmd"
 )
 
@@ -55,10 +55,10 @@ func NewControllerServer(d *csicommon.CSIDriver, c client.Client, vgName string,
 
 func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVolumeRequest) (*csi.CreateVolumeResponse, error) {
 	if err := cs.Driver.ValidateControllerServiceRequest(csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME); err != nil {
-		glog.V(3).Infof("invalid create volume req: %v", req)
+		logger.Error("invalid create volume req: %v", req)
 		return nil, err
 	}
-	// Check sanity of request Name, Volume Capabilities
+
 	if len(req.Name) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "Volume Name cannot be empty")
 	}
@@ -70,7 +70,8 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	requireBytes := req.GetCapacityRange().GetRequiredBytes()
 	node, err := cs.allocator.AllocateNodeForRequest(uint64(requireBytes))
 	if err != nil {
-		return nil, err
+		logger.Warn("allocate node for csi request failed:%s", err.Error())
+		return nil, status.Error(codes.ResourceExhausted, "insufficient capability")
 	}
 
 	response := &csi.CreateVolumeResponse{

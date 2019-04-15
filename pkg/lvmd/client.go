@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/golang/glog"
 	lvmd "github.com/google/lvmd/proto"
+	"github.com/zdnscloud/csi-lvm-plugin/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 )
@@ -50,7 +50,6 @@ func (c *lvmConnection) Close() error {
 }
 
 func connect(address string, timeout time.Duration) (*grpc.ClientConn, error) {
-	glog.V(2).Infof("Connecting to %s", address)
 	dialOptions := []grpc.DialOption{
 		grpc.WithInsecure(),
 		grpc.WithBackoffMaxDelay(time.Second),
@@ -70,14 +69,12 @@ func connect(address string, timeout time.Duration) (*grpc.ClientConn, error) {
 	defer cancel()
 	for {
 		if !conn.WaitForStateChange(ctx, conn.GetState()) {
-			glog.V(4).Infof("Connection timed out")
 			return conn, nil // return nil, subsequent GetPluginInfo will show the real connection error
 		}
+
 		if conn.GetState() == connectivity.Ready {
-			glog.V(3).Infof("Connected")
 			return conn, nil
 		}
-		glog.V(4).Infof("Still trying, connection is %s", conn.GetState())
 	}
 }
 
@@ -131,8 +128,7 @@ func (c *lvmConnection) RemoveLV(ctx context.Context, volGroup string, volumeId 
 		Name:        volumeId,
 	}
 
-	rsp, err := client.RemoveLV(ctx, &req)
-	glog.V(5).Infof("removeLV output: %v", rsp.GetCommandOutput())
+	_, err := client.RemoveLV(ctx, &req)
 	return err
 }
 
@@ -153,10 +149,10 @@ func (c *lvmConnection) GetFreeSizeOfVG(ctx context.Context, vgName string) (uin
 }
 
 func logGRPC(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-	glog.V(5).Infof("GRPC call: %s", method)
-	glog.V(5).Infof("GRPC request: %+v", req)
+	logger.Debug("GRPC call: %s", method)
+	logger.Debug("GRPC request: %+v", req)
 	err := invoker(ctx, method, req, reply, cc, opts...)
-	glog.V(5).Infof("GRPC response: %+v", reply)
-	glog.V(5).Infof("GRPC error: %v", err)
+	logger.Debug("GRPC response: %+v", reply)
+	logger.Debug("GRPC error: %v", err)
 	return err
 }

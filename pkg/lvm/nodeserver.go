@@ -44,6 +44,15 @@ type nodeServer struct {
 	vgName string
 }
 
+func NewNodeServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName string) *nodeServer {
+	return &nodeServer{
+		DefaultNodeServer: csicommon.NewDefaultNodeServer(d),
+		client:            c,
+		vgName:            vgName,
+		nodeID:            nodeID,
+	}
+}
+
 func (ns *nodeServer) GetNodeID() string {
 	return ns.nodeID
 }

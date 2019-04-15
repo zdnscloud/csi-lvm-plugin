@@ -6,6 +6,7 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/zdnscloud/csi-lvm-plugin/logger"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvmd"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes/scheme"
@@ -92,6 +93,8 @@ func (a *NodeAllocator) Release(size uint64, id string) {
 			return
 		}
 	}
+
+	logger.Warn("unknown node %s to release volume", id)
 }
 
 func (a *NodeAllocator) OnCreate(e event.CreateEvent) (handler.Result, error) {
@@ -136,6 +139,7 @@ func (a *NodeAllocator) addNode(n *Node) {
 	isKnownNode := false
 	for _, o := range a.nodes {
 		if o.Id == n.Id {
+			logger.Warn("node %s add more than once", n.Id)
 			*o = *n
 			isKnownNode = true
 			break
@@ -143,6 +147,7 @@ func (a *NodeAllocator) addNode(n *Node) {
 	}
 
 	if isKnownNode == false {
+		logger.Debug("add node %s with cap %v", n.Id, n.FreeSize)
 		a.nodes = append(a.nodes, n)
 	}
 

@@ -2,12 +2,12 @@
 
 
 [[projects]]
-  branch = "master"
   digest = "1:d6afaeed1502aa28e80a4ed0981d570ad91b2579193404256ce672ed0a609e0d"
   name = "github.com/beorn7/perks"
   packages = ["quantile"]
   pruneopts = "UT"
-  revision = "234731a4f01687625231ac651d6b2776e3f3142e"
+  revision = "4b2b341e8d7715fae06375aa633dbb6e91b3fb46"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:7f21fa1f8ab9a529dba26a7e9cf20de217c307fa1d96cb599d3afd9e5c83e9d6"
@@ -272,6 +272,17 @@
   pruneopts = "UT"
   revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
   version = "v1.0.3"
+
+[[projects]]
+  branch = "master"
+  digest = "1:ca00108b57e9ac871bd97d76711d0df6b0d3a08becf838ec9fd6c612796c9189"
+  name = "github.com/zdnscloud/cement"
+  packages = [
+    "log",
+    "log/log4go",
+  ]
+  pruneopts = "UT"
+  revision = "3e9edaca4e5a437983a7968f818829084d30a77a"
 
 [[projects]]
   branch = "relax-k8s-version"
@@ -804,7 +815,7 @@
     "pkg/volume/util/volumepathhandler",
   ]
   pruneopts = "UT"
-  revision = "74cab81eb678291415d816a239d9efcc9be579a7"
+  revision = "358d97431e2b3bb8e9bfb7a8fa7be3a7a65120f6"
 
 [[projects]]
   digest = "1:f86bc539772df0ae5d4245697dc882ae1ade82c5800da74ba921df757ab3c66a"
@@ -841,10 +852,13 @@
     "github.com/golang/glog",
     "github.com/google/lvmd/proto",
     "github.com/kubernetes-csi/drivers/pkg/csi-common",
+    "github.com/zdnscloud/cement/log",
     "github.com/zdnscloud/gok8s/cache",
     "github.com/zdnscloud/gok8s/client",
     "github.com/zdnscloud/gok8s/client/config",
     "github.com/zdnscloud/gok8s/controller",
+    "github.com/zdnscloud/gok8s/event",
+    "github.com/zdnscloud/gok8s/handler",
     "github.com/zdnscloud/gok8s/predicate",
     "golang.org/x/net/context",
     "google.golang.org/grpc",
@@ -852,7 +866,6 @@
     "google.golang.org/grpc/connectivity",
     "google.golang.org/grpc/status",
     "k8s.io/api/core/v1",
-    "k8s.io/apimachinery/pkg/apis/meta/v1",
     "k8s.io/apimachinery/pkg/types",
     "k8s.io/client-go/kubernetes/scheme",
     "k8s.io/kubernetes/pkg/kubelet/apis",

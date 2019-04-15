@@ -18,10 +18,10 @@ package main
 
 import (
 	"flag"
-	"os"
 
-	"github.com/golang/glog"
+	"github.com/zdnscloud/csi-lvm-plugin/logger"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvm"
+
 	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 	"github.com/zdnscloud/gok8s/client/config"
@@ -41,28 +41,21 @@ var (
 func main() {
 	flag.Parse()
 
-	handle()
-	os.Exit(0)
-}
-
-func handle() {
+	logger.InitLogger()
 	config, err := config.GetConfig()
 	if err != nil {
-		glog.Error(err.Error())
-		os.Exit(1)
+		logger.Fatal("get k8s config failed:%s", err.Error())
 	}
 
 	cli, err := client.New(config, client.Options{})
 	if err != nil {
-		glog.Error(err.Error())
-		os.Exit(1)
+		logger.Fatal("create k8s client failed:%s", err.Error())
 	}
 
 	stop := make(chan struct{})
 	cache, err := cache.New(config, cache.Options{})
 	if err != nil {
-		glog.Error(err.Error())
-		os.Exit(1)
+		logger.Fatal("create cache failed:%s", err.Error())
 	}
 	go cache.Start(stop)
 	cache.WaitForCacheSync(stop)

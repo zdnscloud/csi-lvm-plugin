@@ -18,11 +18,11 @@ package lvm
 
 import (
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"github.com/golang/glog"
 	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
+	"github.com/zdnscloud/csi-lvm-plugin/logger"
 )
 
 type lvm struct {
@@ -46,34 +46,15 @@ func GetLVMDriver(client client.Client) *lvm {
 	return &lvm{client: client}
 }
 
-func NewIdentityServer(d *csicommon.CSIDriver) *identityServer {
-	return &identityServer{
-		DefaultIdentityServer: csicommon.NewDefaultIdentityServer(d),
-	}
-}
-
-func NewNodeServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName string) *nodeServer {
-	return &nodeServer{
-		DefaultNodeServer: csicommon.NewDefaultNodeServer(d),
-		client:            c,
-		vgName:            vgName,
-		nodeID:            nodeID,
-	}
-}
-
 func (lvm *lvm) Run(driverName, nodeID, endpoint string, vgName string, cache cache.Cache) {
-	glog.Infof("Driver: %v ", driverName)
-
-	// Initialize default library driver
 	lvm.driver = csicommon.NewCSIDriver(driverName, vendorVersion, nodeID)
-
 	if lvm.driver == nil {
-		glog.Fatalln("Failed to initialize CSI Driver.")
+		logger.Fatal("Failed to initialize CSI Driver.")
 	}
+
 	lvm.driver.AddControllerServiceCapabilities([]csi.ControllerServiceCapability_RPC_Type{csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME})
 	lvm.driver.AddVolumeCapabilityAccessModes([]csi.VolumeCapability_AccessMode_Mode{csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER})
 
-	// Create GRPC servers
 	lvm.ids = NewIdentityServer(lvm.driver)
 	lvm.ns = NewNodeServer(lvm.driver, lvm.client, nodeID, vgName)
 	lvm.cs = NewControllerServer(lvm.driver, lvm.client, vgName, cache)

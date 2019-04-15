@@ -27,6 +27,12 @@ type identityServer struct {
 	*csicommon.DefaultIdentityServer
 }
 
+func NewIdentityServer(d *csicommon.CSIDriver) *identityServer {
+	return &identityServer{
+		DefaultIdentityServer: csicommon.NewDefaultIdentityServer(d),
+	}
+}
+
 func (iden *identityServer) GetPluginCapabilities(ctx context.Context, req *csi.GetPluginCapabilitiesRequest) (*csi.GetPluginCapabilitiesResponse, error) {
 	return &csi.GetPluginCapabilitiesResponse{
 		Capabilities: []*csi.PluginCapability{
