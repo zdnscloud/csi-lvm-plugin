@@ -72,9 +72,11 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	if err != nil {
 		logger.Warn("allocate node for csi request failed:%s", err.Error())
 		return nil, status.Error(codes.ResourceExhausted, "insufficient capability")
+	} else {
+		logger.Debug("allocate node %s for csi volume request %s bytes %v", node, volumeId, requireBytes)
 	}
 
-	response := &csi.CreateVolumeResponse{
+	return &csi.CreateVolumeResponse{
 		Volume: &csi.Volume{
 			VolumeId:      volumeId,
 			CapacityBytes: requireBytes,
@@ -87,37 +89,37 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 				},
 			},
 		},
-	}
-	return response, nil
+	}, nil
 }
 
 func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	vid := req.GetVolumeId()
 	node, err := getVolumeNode(cs.client, vid)
 	if err != nil {
+		logger.Warn("get node for volume %s failed:%s", vid, err.Error())
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Failed to getVolumeNode for %v: %v", vid, err))
 	}
-	if node != "" {
-		addr, err := getLVMDAddr(cs.client, node)
-		if err != nil {
-			return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Failed to getLVMDAddr for %v: %v", node, err))
-		}
 
-		conn, err := lvmd.NewLVMConnection(addr, connectTimeout)
-		defer conn.Close()
-		if err != nil {
-			return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to connect to %v: %v", addr, err))
-		}
+	addr, err := getLVMDAddr(cs.client, node)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Failed to getLVMDAddr for %v: %v", node, err))
+	}
 
-		if _, size, err := conn.GetLV(ctx, cs.vgName, vid); err == nil {
-			if err := conn.RemoveLV(ctx, cs.vgName, vid); err != nil {
-				return nil, status.Errorf(
-					codes.Internal,
-					"Failed to remove volume: err=%v",
-					err)
-			}
-			cs.allocator.Release(size, node)
+	conn, err := lvmd.NewLVMConnection(addr, connectTimeout)
+	defer conn.Close()
+	if err != nil {
+		return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to connect to %v: %v", addr, err))
+	}
+
+	if _, size, err := conn.GetLV(ctx, cs.vgName, vid); err == nil {
+		if err := conn.RemoveLV(ctx, cs.vgName, vid); err != nil {
+			return nil, status.Errorf(
+				codes.Internal,
+				"Failed to remove volume: err=%v",
+				err)
 		}
+		logger.Debug("release %s bytes from node %", size, node)
+		cs.allocator.Release(size, node)
 	}
 
 	response := &csi.DeleteVolumeResponse{}
