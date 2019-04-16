@@ -164,7 +164,7 @@ func (a *NodeAllocator) deleteNode(id string) {
 }
 
 func (a *NodeAllocator) getFreeSize(addr string) (uint64, error) {
-	conn, err := lvmd.NewLVMConnection(addr, connectTimeout)
+	conn, err := lvmd.NewLVMConnection(addr, ConnectTimeout)
 	if err != nil {
 		return 0, err
 	}

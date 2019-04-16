@@ -33,8 +33,9 @@ import (
 )
 
 const (
-	defaultFs      = "ext4"
-	connectTimeout = 3 * time.Second
+	DefaultFS      = "ext4"
+	ConnectTimeout = 3 * time.Second
+	Gigabytes      = int64(1024 * 1024 * 1024)
 )
 
 type controllerServer struct {
@@ -68,7 +69,8 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 
 	volumeId := req.GetName()
 	requireBytes := req.GetCapacityRange().GetRequiredBytes()
-	node, err := cs.allocator.AllocateNodeForRequest(uint64(requireBytes))
+	allocateBytes := useGigaUnit(requireBytes)
+	node, err := cs.allocator.AllocateNodeForRequest(uint64(allocateBytes))
 	if err != nil {
 		logger.Warn("allocate node for csi request failed:%s", err.Error())
 		return nil, status.Error(codes.ResourceExhausted, "insufficient capability")
@@ -79,7 +81,7 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	return &csi.CreateVolumeResponse{
 		Volume: &csi.Volume{
 			VolumeId:      volumeId,
-			CapacityBytes: requireBytes,
+			CapacityBytes: allocateBytes,
 			VolumeContext: req.GetParameters(),
 			AccessibleTopology: []*csi.Topology{
 				{
@@ -105,7 +107,7 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Failed to getLVMDAddr for %v: %v", node, err))
 	}
 
-	conn, err := lvmd.NewLVMConnection(addr, connectTimeout)
+	conn, err := lvmd.NewLVMConnection(addr, ConnectTimeout)
 	defer conn.Close()
 	if err != nil {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to connect to %v: %v", addr, err))
@@ -128,4 +130,9 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 
 func (cs *controllerServer) ControllerExpandVolume(ctx context.Context, req *csi.ControllerExpandVolumeRequest) (*csi.ControllerExpandVolumeResponse, error) {
 	return &csi.ControllerExpandVolumeResponse{}, nil
+}
+
+func useGigaUnit(size int64) int64 {
+	gs := (size + Gigabytes - 1) / Gigabytes
+	return gs * Gigabytes
 }

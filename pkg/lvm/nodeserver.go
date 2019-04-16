@@ -75,7 +75,7 @@ func (ns *nodeServer) createVolume(ctx context.Context, volumeId string) (*v1.Pe
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Failed to getLVMDAddr for %v: %v", node, err))
 	}
 
-	conn, err := lvmd.NewLVMConnection(addr, connectTimeout)
+	conn, err := lvmd.NewLVMConnection(addr, ConnectTimeout)
 	defer conn.Close()
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Failed to connect to %v: %v", addr, err))
@@ -137,13 +137,13 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 		// device, format it with the requested
 		// filesystem.
 		log.Printf("The device %v has no existing filesystem, formatting with %v", devicePath, existingFstype)
-		if err := formatDevice(devicePath, defaultFs); err != nil {
+		if err := formatDevice(devicePath, DefaultFS); err != nil {
 			return nil, status.Errorf(
 				codes.Internal,
 				"formatDevice failed: err=%v",
 				err)
 		}
-		existingFstype = defaultFs
+		existingFstype = DefaultFS
 	}
 
 	// Volume Mount
@@ -160,7 +160,7 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 
 		// Mount
 		mounter := mount.New("")
-		err = mounter.Mount(devicePath, targetPath, defaultFs, options)
+		err = mounter.Mount(devicePath, targetPath, DefaultFS, options)
 		if err != nil {
 			return nil, status.Error(codes.Internal, err.Error())
 		}
