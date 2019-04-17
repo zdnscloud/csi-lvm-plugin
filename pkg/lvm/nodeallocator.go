@@ -3,7 +3,6 @@ package lvm
 import (
 	"context"
 	"errors"
-	"sort"
 	"sync"
 
 	"github.com/zdnscloud/csi-lvm-plugin/logger"
@@ -33,19 +32,14 @@ type Node struct {
 	FreeSize uint64
 }
 
-type NodeByFreeSize []*Node
-
-func (n NodeByFreeSize) Len() int           { return len(n) }
-func (n NodeByFreeSize) Less(i, j int) bool { return n[i].FreeSize < n[j].FreeSize }
-func (n NodeByFreeSize) Swap(i, j int)      { n[i], n[j] = n[j], n[i] }
-
 type NodeAllocator struct {
 	stopCh chan struct{}
 	cache  cache.Cache
 	vgName string
 
 	lock  sync.Mutex
-	nodes NodeByFreeSize
+	nodes []*Node
+	index int
 }
 
 func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
@@ -57,6 +51,7 @@ func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
 		stopCh: stopCh,
 		cache:  c,
 		vgName: vgName,
+		index:  0,
 	}
 
 	go ctrl.Start(stopCh, sc, predicate.NewIgnoreUnchangedUpdate())
@@ -67,7 +62,10 @@ func (a *NodeAllocator) AllocateNodeForRequest(size uint64) (node string, err er
 	a.lock.Lock()
 	defer a.lock.Unlock()
 
-	for _, n := range a.nodes {
+	nodeCount := len(a.nodes)
+	for i := 0; i < nodeCount; i++ {
+		n := a.nodes[a.index]
+		a.index = (a.index + 1) % nodeCount
 		if n.FreeSize > size {
 			n.FreeSize = n.FreeSize - size
 			node = n.Id
@@ -75,9 +73,7 @@ func (a *NodeAllocator) AllocateNodeForRequest(size uint64) (node string, err er
 		}
 	}
 
-	if node != "" {
-		sort.Sort(a.nodes)
-	} else {
+	if node == "" {
 		err = ErrNoEnoughFreeSpace
 	}
 	return
@@ -89,7 +85,6 @@ func (a *NodeAllocator) Release(size uint64, id string) {
 	for _, n := range a.nodes {
 		if n.Id == id {
 			n.FreeSize += size
-			sort.Sort(a.nodes)
 			return
 		}
 	}
@@ -150,17 +145,20 @@ func (a *NodeAllocator) addNode(n *Node) {
 		logger.Debug("add node %s with cap %v", n.Id, n.FreeSize)
 		a.nodes = append(a.nodes, n)
 	}
-
-	sort.Sort(a.nodes)
 }
 
 func (a *NodeAllocator) deleteNode(id string) {
 	for i, n := range a.nodes {
 		if n.Id == id {
 			a.nodes = append(a.nodes[:i], a.nodes[i+1:]...)
+			if a.index == len(a.nodes) {
+				a.index = 0
+			}
 			return
 		}
 	}
+
+	logger.Warn("deleted storage node %s is unknown", id)
 }
 
 func (a *NodeAllocator) getFreeSize(addr string) (uint64, error) {
