@@ -120,7 +120,7 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 				"Failed to remove volume: err=%v",
 				err)
 		}
-		logger.Debug("release %s bytes from node %", size, node)
+		logger.Debug("release %v bytes from node %s", size, node)
 		cs.allocator.Release(size, node)
 	}
 
