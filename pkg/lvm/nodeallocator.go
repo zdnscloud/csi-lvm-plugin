@@ -164,7 +164,7 @@ func (a *NodeAllocator) OnCreate(e event.CreateEvent) (handler.Result, error) {
 		sl, ok := a.statefulsets[obj.Namespace]
 		if ok && obj.UID != "" {
 			for _, ss := range sl {
-				if strings.HasPrefix(obj.Name, ss.LVMVolumeName+"-"+ss.Name) {
+				if strings.HasPrefix(obj.Name, ss.LVMVolumeName+"-"+ss.Name+"-") {
 					log.Debugf("add pvc %s to statefulset %s", obj.Name, ss.Name)
 					a.knownPVC[obj.UID] = ss
 					break
