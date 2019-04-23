@@ -63,6 +63,9 @@ func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
 
 	ctrl := controller.New("nodeAllocator", c, scheme.Scheme)
 	ctrl.Watch(&corev1.Node{})
+	ctrl.Watch(&corev1.Pod{})
+	ctrl.Watch(&corev1.PersistentVolumeClaim{})
+	ctrl.Watch(&appsv1.StatefulSet{})
 
 	stopCh := make(chan struct{})
 	a := &NodeAllocator{
