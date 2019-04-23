@@ -119,6 +119,7 @@ func (a *NodeAllocator) AllocateNodeForRequest(pvcUID string, size uint64) (node
 
 	ss, ok := a.knownPVC[k8stypes.UID(pvcUID)]
 	if ok {
+		log.Debugf("allocate node for pvc %s in statefulset %s", pvcUID, ss.Name)
 		for _, c := range candidate {
 			if _, ok := ss.Nodes[c]; ok == false {
 				return c, nil
@@ -126,6 +127,7 @@ func (a *NodeAllocator) AllocateNodeForRequest(pvcUID string, size uint64) (node
 		}
 	}
 
+	log.Debugf("random allocate node for pvc %s", pvcUID)
 	return candidate[rand.Intn(len(candidate))], nil
 }
 
@@ -160,6 +162,7 @@ func (a *NodeAllocator) OnCreate(e event.CreateEvent) (handler.Result, error) {
 		if ok && obj.UID != "" {
 			for _, ss := range sl {
 				if strings.HasPrefix(obj.Name, ss.LVMVolumeName+"-"+ss.Name) {
+					log.Debugf("add pvc %s to statefulset %s", obj.Name, ss.Name)
 					a.knownPVC[obj.UID] = ss
 					break
 				}
@@ -230,6 +233,7 @@ func (a *NodeAllocator) addStatefulSet(ss *appsv1.StatefulSet, checkExists bool)
 				}
 			}
 			if isNew {
+				log.Debugf("add new statefulset %s with volume name %s", ss.Name, vct.Name)
 				sl = append(sl, &StatefulSet{
 					Name:          ss.Name,
 					Nodes:         make(map[string]struct{}),
@@ -267,6 +271,7 @@ func (a *NodeAllocator) onPodScheduledToNode(pod *corev1.Pod) {
 	if ok {
 		for _, ss := range sl {
 			if ss.Name == ownerName {
+				log.Debugf("pod %s belongs to statefulset %s is scheduled to node %s", pod.Name, ss.Name, pod.Spec.NodeName)
 				ss.Nodes[pod.Spec.NodeName] = struct{}{}
 				break
 			}

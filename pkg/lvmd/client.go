@@ -149,10 +149,12 @@ func (c *lvmConnection) GetFreeSizeOfVG(ctx context.Context, vgName string) (uin
 }
 
 func logGRPC(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-	log.Debugf("GRPC call: %s", method)
-	log.Debugf("GRPC request: %+v", req)
 	err := invoker(ctx, method, req, reply, cc, opts...)
-	log.Debugf("GRPC response: %+v", reply)
-	log.Debugf("GRPC error: %v", err)
+	if err != nil {
+		log.Debugf("GRPC call: %s", method)
+		log.Debugf("GRPC request: %+v", req)
+		log.Debugf("GRPC response: %+v", reply)
+		log.Debugf("GRPC error: %v", err)
+	}
 	return err
 }
