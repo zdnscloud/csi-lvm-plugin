@@ -35,7 +35,7 @@ const (
 
 type StatefulSet struct {
 	Name          string
-	Nodes         map[string]struct{}
+	PodAndNode    map[string]string
 	LVMVolumeName string
 }
 
@@ -123,15 +123,40 @@ func (a *NodeAllocator) AllocateNodeForRequest(pvcUID string, size uint64) (node
 	ss, ok := a.knownPVC[k8stypes.UID(pvcUID)]
 	if ok {
 		log.Debugf("allocate node for pvc %s in statefulset %s", pvcUID, ss.Name)
-		for _, c := range candidate {
-			if _, ok := ss.Nodes[c]; ok == false {
-				return c, nil
-			}
-		}
+		return allocateNodeForStatefulSet(ss, candidate), nil
+	} else {
+		log.Debugf("random allocate node for pvc %s", pvcUID)
+		return randomeAllocateNode(candidate), nil
+	}
+}
+
+func allocateNodeForStatefulSet(ss *StatefulSet, candidate []string) string {
+	usedNodes := make(map[string]int)
+	for _, n := range ss.PodAndNode {
+		usedNodes[n] = usedNodes[n] + 1
 	}
 
-	log.Debugf("random allocate node for pvc %s", pvcUID)
-	return candidate[rand.Intn(len(candidate))], nil
+	scores := make([]int, len(candidate))
+	for i, c := range candidate {
+		if score, ok := usedNodes[c]; ok == false {
+			return c
+		} else {
+			scores[i] = score
+		}
+	}
+	smallest := scores[0]
+	smallestIndex := 0
+	for i := 1; i < len(candidate); i++ {
+		if smallest > scores[i] {
+			smallest = scores[i]
+			smallestIndex = i
+		}
+	}
+	return candidate[smallestIndex]
+}
+
+func randomeAllocateNode(candidate []string) string {
+	return candidate[rand.Intn(len(candidate))]
 }
 
 func (a *NodeAllocator) Release(size uint64, id string) {
@@ -157,9 +182,7 @@ func (a *NodeAllocator) OnCreate(e event.CreateEvent) (handler.Result, error) {
 	case *appsv1.StatefulSet:
 		a.addStatefulSet(obj, true)
 	case *corev1.Pod:
-		if obj.Spec.NodeName != "" {
-			a.onPodScheduledToNode(obj)
-		}
+		a.changeNodeOfPod(obj, obj.Spec.NodeName)
 	case *corev1.PersistentVolumeClaim:
 		sl, ok := a.statefulsets[obj.Namespace]
 		if ok && obj.UID != "" {
@@ -239,7 +262,7 @@ func (a *NodeAllocator) addStatefulSet(ss *appsv1.StatefulSet, checkExists bool)
 				log.Debugf("add new statefulset %s with volume name %s", ss.Name, vct.Name)
 				sl = append(sl, &StatefulSet{
 					Name:          ss.Name,
-					Nodes:         make(map[string]struct{}),
+					PodAndNode:    make(map[string]string),
 					LVMVolumeName: vct.Name,
 				})
 				a.statefulsets[ss.Namespace] = sl
@@ -256,28 +279,34 @@ func (a *NodeAllocator) OnUpdate(e event.UpdateEvent) (handler.Result, error) {
 	switch newObj := e.ObjectNew.(type) {
 	case *corev1.Pod:
 		oldPod := e.ObjectOld.(*corev1.Pod)
-		if oldPod.Spec.NodeName != newObj.Spec.NodeName && newObj.Spec.NodeName != "" {
-			a.onPodScheduledToNode(newObj)
+		if oldPod.Spec.NodeName != newObj.Spec.NodeName {
+			a.changeNodeOfPod(newObj, newObj.Spec.NodeName)
 		}
 	}
 
 	return handler.Result{}, nil
 }
 
-func (a *NodeAllocator) onPodScheduledToNode(pod *corev1.Pod) {
+func (a *NodeAllocator) changeNodeOfPod(pod *corev1.Pod, nodeName string) {
 	if len(pod.OwnerReferences) != 1 || pod.OwnerReferences[0].Kind != "StatefulSet" {
 		return
 	}
 
 	ownerName := pod.OwnerReferences[0].Name
 	sl, ok := a.statefulsets[pod.Namespace]
-	if ok {
-		for _, ss := range sl {
-			if ss.Name == ownerName {
-				log.Debugf("pod %s belongs to statefulset %s is scheduled to node %s", pod.Name, ss.Name, pod.Spec.NodeName)
-				ss.Nodes[pod.Spec.NodeName] = struct{}{}
-				break
+	if ok == false {
+		return
+	}
+
+	for _, ss := range sl {
+		if ss.Name == ownerName {
+			if nodeName == "" {
+				delete(ss.PodAndNode, pod.Name)
+			} else {
+				log.Debugf("pod %s belongs to statefulset %s is scheduled to node %s", pod.Name, ss.Name, nodeName)
+				ss.PodAndNode[pod.Name] = nodeName
 			}
+			break
 		}
 	}
 }
@@ -304,6 +333,8 @@ func (a *NodeAllocator) OnDelete(e event.DeleteEvent) (handler.Result, error) {
 		if ok && v == "true" {
 			a.deleteNode(obj.Name)
 		}
+	case *corev1.Pod:
+		a.changeNodeOfPod(obj, "")
 	}
 	return handler.Result{}, nil
 }
