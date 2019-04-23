@@ -9,7 +9,7 @@ import (
 	"time"
 
 	lvmd "github.com/google/lvmd/proto"
-	"github.com/zdnscloud/csi-lvm-plugin/logger"
+	"github.com/zdnscloud/cement/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 )
@@ -149,10 +149,10 @@ func (c *lvmConnection) GetFreeSizeOfVG(ctx context.Context, vgName string) (uin
 }
 
 func logGRPC(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-	logger.Debug("GRPC call: %s", method)
-	logger.Debug("GRPC request: %+v", req)
+	log.Debugf("GRPC call: %s", method)
+	log.Debugf("GRPC request: %+v", req)
 	err := invoker(ctx, method, req, reply, cc, opts...)
-	logger.Debug("GRPC response: %+v", reply)
-	logger.Debug("GRPC error: %v", err)
+	log.Debugf("GRPC response: %+v", reply)
+	log.Debugf("GRPC error: %v", err)
 	return err
 }

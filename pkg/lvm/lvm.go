@@ -22,7 +22,7 @@ import (
 	"github.com/zdnscloud/gok8s/client"
 
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
-	"github.com/zdnscloud/csi-lvm-plugin/logger"
+	"github.com/zdnscloud/cement/log"
 )
 
 type lvm struct {
@@ -49,7 +49,7 @@ func GetLVMDriver(client client.Client) *lvm {
 func (lvm *lvm) Run(driverName, nodeID, endpoint string, vgName string, cache cache.Cache) {
 	lvm.driver = csicommon.NewCSIDriver(driverName, vendorVersion, nodeID)
 	if lvm.driver == nil {
-		logger.Fatal("Failed to initialize CSI Driver.")
+		log.Fatalf("Failed to initialize CSI Driver.")
 	}
 
 	lvm.driver.AddControllerServiceCapabilities([]csi.ControllerServiceCapability_RPC_Type{csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME})

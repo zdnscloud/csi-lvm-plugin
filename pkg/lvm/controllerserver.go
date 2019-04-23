@@ -18,6 +18,7 @@ package lvm
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/zdnscloud/gok8s/cache"
@@ -28,7 +29,7 @@ import (
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
-	"github.com/zdnscloud/csi-lvm-plugin/logger"
+	"github.com/zdnscloud/cement/log"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvmd"
 )
 
@@ -56,7 +57,7 @@ func NewControllerServer(d *csicommon.CSIDriver, c client.Client, vgName string,
 
 func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVolumeRequest) (*csi.CreateVolumeResponse, error) {
 	if err := cs.Driver.ValidateControllerServiceRequest(csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME); err != nil {
-		logger.Error("invalid create volume req: %v", req)
+		log.Errorf("invalid create volume req: %v", req)
 		return nil, err
 	}
 
@@ -65,17 +66,24 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	}
 	if req.VolumeCapabilities == nil {
 		return nil, status.Error(codes.InvalidArgument, "Volume Capabilities cannot be empty")
+	} else {
+		for _, cap := range req.VolumeCapabilities {
+			if cap.GetAccessMode().GetMode() != csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER {
+				return nil, status.Error(codes.InvalidArgument, "only single node writer is supported")
+			}
+		}
 	}
 
 	volumeId := req.GetName()
 	requireBytes := req.GetCapacityRange().GetRequiredBytes()
 	allocateBytes := useGigaUnit(requireBytes)
-	node, err := cs.allocator.AllocateNodeForRequest(uint64(allocateBytes))
+	pvcUID := strings.TrimPrefix(volumeId, "pvc-")
+	node, err := cs.allocator.AllocateNodeForRequest(pvcUID, uint64(allocateBytes))
 	if err != nil {
-		logger.Warn("allocate node for csi request failed:%s", err.Error())
+		log.Warnf("allocate node for csi request failed:%s", err.Error())
 		return nil, status.Error(codes.ResourceExhausted, "insufficient capability")
 	} else {
-		logger.Debug("allocate node %s for csi volume request %s bytes %v", node, volumeId, requireBytes)
+		log.Debugf("allocate node %s for csi volume request %s bytes %v", node, volumeId, requireBytes)
 	}
 
 	return &csi.CreateVolumeResponse{
@@ -94,11 +102,26 @@ func (cs *controllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	}, nil
 }
 
+//only support ReadWriteOnce
+func (cs *controllerServer) ValidateVolumeCapabilities(ctx context.Context, req *csi.ValidateVolumeCapabilitiesRequest) (*csi.ValidateVolumeCapabilitiesResponse, error) {
+	for _, cap := range req.VolumeCapabilities {
+		if cap.GetAccessMode().GetMode() != csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER {
+			return &csi.ValidateVolumeCapabilitiesResponse{}, nil
+		}
+	}
+
+	return &csi.ValidateVolumeCapabilitiesResponse{
+		Confirmed: &csi.ValidateVolumeCapabilitiesResponse_Confirmed{
+			VolumeCapabilities: req.VolumeCapabilities,
+		},
+	}, nil
+}
+
 func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
 	vid := req.GetVolumeId()
 	node, err := getVolumeNode(cs.client, vid)
 	if err != nil {
-		logger.Warn("get node for volume %s failed:%s", vid, err.Error())
+		log.Warnf("get node for volume %s failed:%s", vid, err.Error())
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Failed to getVolumeNode for %v: %v", vid, err))
 	}
 
@@ -120,7 +143,7 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 				"Failed to remove volume: err=%v",
 				err)
 		}
-		logger.Debug("release %v bytes from node %s", size, node)
+		log.Debugf("release %v bytes from node %s", size, node)
 		cs.allocator.Release(size, node)
 	}
 

@@ -275,14 +275,15 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ca00108b57e9ac871bd97d76711d0df6b0d3a08becf838ec9fd6c612796c9189"
+  digest = "1:c18b60bd8ca3014d54fa391f7e09b698a798f215a535bc7c95bd0181cdcf4df4"
   name = "github.com/zdnscloud/cement"
   packages = [
     "log",
     "log/log4go",
+    "unittest",
   ]
   pruneopts = "UT"
-  revision = "3e9edaca4e5a437983a7968f818829084d30a77a"
+  revision = "dbe599d3f012f8c64527e2b40affb252bf95afe3"
 
 [[projects]]
   branch = "relax-k8s-version"
@@ -853,6 +854,7 @@
     "github.com/google/lvmd/proto",
     "github.com/kubernetes-csi/drivers/pkg/csi-common",
     "github.com/zdnscloud/cement/log",
+    "github.com/zdnscloud/cement/unittest",
     "github.com/zdnscloud/gok8s/cache",
     "github.com/zdnscloud/gok8s/client",
     "github.com/zdnscloud/gok8s/client/config",
@@ -865,6 +867,7 @@
     "google.golang.org/grpc/codes",
     "google.golang.org/grpc/connectivity",
     "google.golang.org/grpc/status",
+    "k8s.io/api/apps/v1",
     "k8s.io/api/core/v1",
     "k8s.io/apimachinery/pkg/types",
     "k8s.io/client-go/kubernetes/scheme",
