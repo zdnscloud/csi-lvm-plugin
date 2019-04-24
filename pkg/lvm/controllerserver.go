@@ -144,7 +144,7 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 				err)
 		}
 		log.Debugf("release %v bytes from node %s", size, node)
-		cs.allocator.Release(size, node)
+		cs.allocator.Release(node, size)
 	}
 
 	response := &csi.DeleteVolumeResponse{}

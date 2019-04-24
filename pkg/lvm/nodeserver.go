@@ -18,7 +18,6 @@ package lvm
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -32,8 +31,8 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"github.com/golang/glog"
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
+	"github.com/zdnscloud/cement/log"
 	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvmd"
 )
 
@@ -86,7 +85,7 @@ func (ns *nodeServer) createVolume(ctx context.Context, volumeId string) (*v1.Pe
 		Name:        volumeId,
 		Size:        uint64(size),
 	})
-	glog.V(3).Infof("CreateLV: %v", resp)
+	log.Infof("CreateLV: %v", resp)
 
 	if err != nil {
 		return nil, status.Errorf(
@@ -123,7 +122,7 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 		}
 	}
 
-	log.Printf("Determining filesystem type at %v", devicePath)
+	log.Infof("Determining filesystem type at %v", devicePath)
 	existingFstype, err := determineFilesystemType(devicePath)
 	if err != nil {
 		return nil, status.Errorf(
@@ -131,12 +130,12 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 			"Cannot determine filesystem type: err=%v",
 			err)
 	}
-	log.Printf("Existing filesystem type is '%v'", existingFstype)
+	log.Infof("Existing filesystem type is '%v'", existingFstype)
 	if existingFstype == "" {
 		// There is no existing filesystem on the
 		// device, format it with the requested
 		// filesystem.
-		log.Printf("The device %v has no existing filesystem, formatting with %v", devicePath, existingFstype)
+		log.Infof("The device %v has no existing filesystem, formatting with %v", devicePath, existingFstype)
 		if err := formatDevice(devicePath, DefaultFS); err != nil {
 			return nil, status.Errorf(
 				codes.Internal,
