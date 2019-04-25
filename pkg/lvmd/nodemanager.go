@@ -34,6 +34,7 @@ const (
 type Node struct {
 	Name     string
 	Addr     string
+	Size     uint64
 	FreeSize uint64
 }
 
@@ -152,12 +153,13 @@ func (m *NodeManager) addNode(n *corev1.Node, checkExists bool) {
 			}
 		}
 
-		freeSize, err := m.getFreeSizeInVG(addr + ":" + lvmdPort)
+		size, freeSize, err := m.getSizeInVG(addr + ":" + lvmdPort)
 		if err == nil {
 			log.Debugf("add node %s with cap %v", n.Name, freeSize)
 			m.nodes = append(m.nodes, &Node{
 				Name:     n.Name,
 				Addr:     addr,
+				Size:     size,
 				FreeSize: freeSize,
 			})
 		}
@@ -195,11 +197,11 @@ func (m *NodeManager) deleteNode(name string) {
 	log.Warnf("deleted storage node %s is unknown", name)
 }
 
-func (m *NodeManager) getFreeSizeInVG(addr string) (uint64, error) {
+func (m *NodeManager) getSizeInVG(addr string) (uint64, uint64, error) {
 	conn, err := NewLVMConnection(addr, ConnectTimeout)
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 	defer conn.Close()
-	return conn.GetFreeSizeOfVG(context.TODO(), m.vgName)
+	return conn.GetSizeOfVG(context.TODO(), m.vgName)
 }
