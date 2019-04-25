@@ -306,6 +306,14 @@
   revision = "9ea0cb57ee73d28234f35e2f942943db9a819bb4"
 
 [[projects]]
+  branch = "release-1.12"
+  digest = "1:c71b4c3804cd027b6274e9082fa590f31e3aae89e0d28ad8e5e205a5ff08dee1"
+  name = "github.com/zdnscloud/lvmd"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a059e60d12fafc95136556aaf1c24d5567017fc7"
+
+[[projects]]
   branch = "master"
   digest = "1:bac77e18329fa88ea880b9a7cfcb8fd25d8b835397dd9143f4b162a43e35bb60"
   name = "golang.org/x/crypto"
@@ -850,7 +858,6 @@
   analyzer-version = 1
   input-imports = [
     "github.com/container-storage-interface/spec/lib/go/csi",
-    "github.com/golang/glog",
     "github.com/google/lvmd/proto",
     "github.com/kubernetes-csi/drivers/pkg/csi-common",
     "github.com/zdnscloud/cement/log",
@@ -862,6 +869,7 @@
     "github.com/zdnscloud/gok8s/event",
     "github.com/zdnscloud/gok8s/handler",
     "github.com/zdnscloud/gok8s/predicate",
+    "github.com/zdnscloud/lvmd",
     "golang.org/x/net/context",
     "google.golang.org/grpc",
     "google.golang.org/grpc/codes",

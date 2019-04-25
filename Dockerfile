@@ -4,7 +4,7 @@ RUN mkdir -p /go/src/github.com/zdnscloud/csi-lvm-plugin
 COPY . /go/src/github.com/zdnscloud/csi-lvm-plugin
 
 WORKDIR /go/src/github.com/zdnscloud/csi-lvm-plugin
-RUN CGO_ENABLED=0 GOOS=linux go build -o lvmplugin cmd/k8s-csi-lvm/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o lvmplugin cmd/main.go
 
 
 FROM alpine

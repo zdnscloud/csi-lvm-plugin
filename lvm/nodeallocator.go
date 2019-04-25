@@ -13,13 +13,13 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 
 	"github.com/zdnscloud/cement/log"
-	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvmd"
 	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 	"github.com/zdnscloud/gok8s/controller"
 	"github.com/zdnscloud/gok8s/event"
 	"github.com/zdnscloud/gok8s/handler"
 	"github.com/zdnscloud/gok8s/predicate"
+	"github.com/zdnscloud/lvmd"
 )
 
 type StatefulSet struct {

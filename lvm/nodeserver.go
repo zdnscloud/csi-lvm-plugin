@@ -33,7 +33,7 @@ import (
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/kubernetes-csi/drivers/pkg/csi-common"
 	"github.com/zdnscloud/cement/log"
-	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvmd"
+	"github.com/zdnscloud/lvmd"
 )
 
 type nodeServer struct {

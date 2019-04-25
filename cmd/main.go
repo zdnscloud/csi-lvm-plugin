@@ -19,7 +19,7 @@ package main
 import (
 	"flag"
 
-	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvm"
+	"github.com/zdnscloud/csi-lvm-plugin/lvm"
 
 	"github.com/zdnscloud/cement/log"
 	"github.com/zdnscloud/gok8s/cache"
