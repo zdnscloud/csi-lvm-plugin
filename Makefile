@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-REGISTRY_NAME = quay.io/lvmcsi
-IMAGE_VERSION = v0.3.1
+REGISTRY_NAME = zdnscloud
+IMAGE_VERSION = v0.6
 
 .PHONY: all lvm clean
 
