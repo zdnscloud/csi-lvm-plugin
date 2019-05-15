@@ -19,7 +19,7 @@ package main
 import (
 	"flag"
 
-	"github.com/zdnscloud/csi-lvm-plugin/lvm"
+	"github.com/zdnscloud/csi-lvm-plugin/pkg/lvm"
 
 	"github.com/zdnscloud/cement/log"
 	"github.com/zdnscloud/gok8s/cache"
@@ -60,6 +60,6 @@ func main() {
 	go cache.Start(stop)
 	cache.WaitForCacheSync(stop)
 
-	driver := lvm.GetLVMDriver(cli)
+	driver := lvm.NewDriver(cli)
 	driver.Run(*driverName, *nodeID, *endpoint, *vgName, cache)
 }

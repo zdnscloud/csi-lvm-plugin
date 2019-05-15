@@ -25,28 +25,24 @@ import (
 	"github.com/zdnscloud/cement/log"
 )
 
-type lvm struct {
+type Driver struct {
 	driver *csicommon.CSIDriver
 	client client.Client
 
 	ids *identityServer
 	ns  *nodeServer
 	cs  *controllerServer
-
-	cap   []*csi.VolumeCapability_AccessMode
-	cscap []*csi.ControllerServiceCapability
 }
 
 var (
-	lvmDriver     *lvm
-	vendorVersion = "0.3.0"
+	vendorVersion = "1.0.0"
 )
 
-func GetLVMDriver(client client.Client) *lvm {
-	return &lvm{client: client}
+func NewDriver(client client.Client) *Driver {
+	return &Driver{client: client}
 }
 
-func (lvm *lvm) Run(driverName, nodeID, endpoint string, vgName string, cache cache.Cache) {
+func (lvm *Driver) Run(driverName, nodeID, endpoint string, vgName string, cache cache.Cache) {
 	lvm.driver = csicommon.NewCSIDriver(driverName, vendorVersion, nodeID)
 	if lvm.driver == nil {
 		log.Fatalf("Failed to initialize CSI Driver.")
