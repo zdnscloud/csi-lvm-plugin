@@ -30,10 +30,6 @@
   version = "1.0.0"
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/google/lvmd"
-
-[[constraint]]
   branch = "release-1.12"
   name = "github.com/zdnscloud/lvmd"
 

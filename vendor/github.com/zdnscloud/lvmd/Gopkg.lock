@@ -67,14 +67,6 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:a7a68eb7d6f9ab0b0bad2b638f165f289c3b92a09a0d7ba0ea9e6342ba99f615"
-  name = "github.com/google/lvmd"
-  packages = ["proto"]
-  pruneopts = "UT"
-  revision = "5786ea66b376bd92ed88a3c8e301212bbbc08639"
-
-[[projects]]
   digest = "1:65c4414eeb350c47b8de71110150d0ea8a281835b1f386eacaa3ad7325929c21"
   name = "github.com/googleapis/gnostic"
   packages = [
@@ -177,6 +169,14 @@
   ]
   pruneopts = "UT"
   revision = "9ea0cb57ee73d28234f35e2f942943db9a819bb4"
+
+[[projects]]
+  branch = "master"
+  digest = "1:724ec5024872ab336bc03c47f544e616e196190beb9482a6b74006ac3e6748c6"
+  name = "github.com/zdnscloud/lvmd-server"
+  packages = ["proto"]
+  pruneopts = "UT"
+  revision = "fc88e2bb5e1539c67c8d7c0f58b54c202d0c3520"
 
 [[projects]]
   branch = "master"
@@ -479,7 +479,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/google/lvmd/proto",
     "github.com/zdnscloud/cement/log",
     "github.com/zdnscloud/gok8s/cache",
     "github.com/zdnscloud/gok8s/client",
@@ -487,6 +486,7 @@
     "github.com/zdnscloud/gok8s/event",
     "github.com/zdnscloud/gok8s/handler",
     "github.com/zdnscloud/gok8s/predicate",
+    "github.com/zdnscloud/lvmd-server/proto",
     "google.golang.org/grpc",
     "google.golang.org/grpc/connectivity",
     "k8s.io/api/core/v1",

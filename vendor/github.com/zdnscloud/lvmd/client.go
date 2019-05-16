@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	lvmd "github.com/google/lvmd/proto"
 	"github.com/zdnscloud/cement/log"
+	lvmd "github.com/zdnscloud/lvmd-server/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 )

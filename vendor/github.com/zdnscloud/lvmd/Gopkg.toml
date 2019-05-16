@@ -27,7 +27,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/google/lvmd"
+  name = "github.com/zdnscloud/lvmd-server"
 
 [[constraint]]
   branch = "master"

@@ -140,7 +140,7 @@ func (m *NodeManager) Release(name string, size uint64) error {
 
 func (m *NodeManager) OnCreate(e event.CreateEvent) (handler.Result, error) {
 	n := e.Object.(*corev1.Node)
-	if isStorageNode(n) {
+	if isStorageNode(n) && isNodeReady(n) {
 		m.lock.Lock()
 		m.addNode(n, true)
 		m.lock.Unlock()
