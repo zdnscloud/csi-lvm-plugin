@@ -13,7 +13,7 @@
 # limitations under the License.
 
 REGISTRY_NAME = zdnscloud
-IMAGE_VERSION = v0.6
+IMAGE_VERSION = v0.2
 
 .PHONY: all lvm clean
 
@@ -21,10 +21,10 @@ all: lvm
 
 lvm:
 	if [ ! -d ./vendor ]; then dep ensure; fi
-	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o ./deploy/docker/lvmplugin ./cmd/
+	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o ./lvmcsi ./cmd/
 
 lvm-container: lvm
-	docker build -t $(REGISTRY_NAME)/lvmplugin:$(IMAGE_VERSION) ./deploy/docker/
+	docker build -t $(REGISTRY_NAME)/lvmplugin:$(IMAGE_VERSION) .
 
 push-lvm-container: lvm-container
 	docker push $(REGISTRY_NAME)/lvmplugin:$(IMAGE_VERSION)
