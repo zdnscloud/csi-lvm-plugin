@@ -27,8 +27,9 @@ var (
 )
 
 const (
-	ZkeStorageLabel     = "node-role.kubernetes.io/storage"
-	ZkeInternalIPAnnKey = "zdnscloud.cn/internal-ip"
+	ZkeStorageLabel      = "storage.zcloud.cn/storagetype"
+	ZkeStorageLabelValue = "Lvm"
+	ZkeInternalIPAnnKey  = "zdnscloud.cn/internal-ip"
 )
 
 type Node struct {
@@ -236,5 +237,5 @@ func isNodeReady(node *corev1.Node) bool {
 
 func isStorageNode(n *corev1.Node) bool {
 	v, ok := n.Labels[ZkeStorageLabel]
-	return ok && v == "true"
+	return ok && v == ZkeStorageLabelValue
 }
