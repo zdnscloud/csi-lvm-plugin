@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-REGISTRY_NAME = zdnscloud
+REGISTRY_NAME = zdnscloud/lvmcsi
 IMAGE_VERSION = v0.2
 
 .PHONY: all lvm clean
@@ -23,12 +23,12 @@ lvm:
 	if [ ! -d ./vendor ]; then dep ensure; fi
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o ./lvmcsi ./cmd/
 
-lvm-container: lvm
-	docker build -t $(REGISTRY_NAME)/lvmplugin:$(IMAGE_VERSION) .
+lvm-container:
+	docker build -t $(REGISTRY_NAME):$(IMAGE_VERSION) .
 
 push-lvm-container: lvm-container
-	docker push $(REGISTRY_NAME)/lvmplugin:$(IMAGE_VERSION)
+	docker push $(REGISTRY_NAME):$(IMAGE_VERSION)
 
 clean:
 	go clean -r -x
-	rm -f deploy/docker/lvmplugin
+	rm -f lvmcsi
