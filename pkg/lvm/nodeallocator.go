@@ -96,6 +96,10 @@ func (a *NodeAllocator) AllocateNodeForRequest(pvcUID string, size uint64) (node
 }
 
 func allocateNodeForStatefulSet(ss *StatefulSet, candidate []string) string {
+	rand.Shuffle(len(candidate), func(i, j int) {
+		candidate[i], candidate[j] = candidate[j], candidate[i]
+	})
+
 	usedNodes := make(map[string]int)
 	for _, n := range ss.PodAndNode {
 		usedNodes[n] = usedNodes[n] + 1
