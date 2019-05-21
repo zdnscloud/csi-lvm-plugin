@@ -96,9 +96,9 @@ func (a *NodeAllocator) AllocateNodeForRequest(pvcUID string, size uint64) (node
 }
 
 func allocateNodeForStatefulSet(ss *StatefulSet, candidate []string) string {
-	rand.Shuffle(len(candidate), func(i, j int) {
-		candidate[i], candidate[j] = candidate[j], candidate[i]
-	})
+	if len(candidate) == 1 {
+		return candidate[0]
+	}
 
 	usedNodes := make(map[string]int)
 	for _, n := range ss.PodAndNode {
@@ -106,22 +106,30 @@ func allocateNodeForStatefulSet(ss *StatefulSet, candidate []string) string {
 	}
 
 	scores := make([]int, len(candidate))
+	smallest := 10240 //a impossible value for pod count on a node
 	for i, c := range candidate {
-		if score, ok := usedNodes[c]; ok == false {
-			return c
-		} else {
-			scores[i] = score
+		score, ok := usedNodes[c]
+		if ok == false {
+			score = 0
+		}
+		scores[i] = score
+		if score < smallest {
+			smallest = score
 		}
 	}
-	smallest := scores[0]
-	smallestIndex := 0
-	for i := 1; i < len(candidate); i++ {
-		if smallest > scores[i] {
-			smallest = scores[i]
-			smallestIndex = i
+
+	targetNodes := make([]string, 0, len(candidate))
+	for i := 0; i < len(candidate); i++ {
+		if scores[i] == smallest {
+			targetNodes = append(targetNodes, candidate[i])
 		}
 	}
-	return candidate[smallestIndex]
+
+	if len(targetNodes) == 1 {
+		return targetNodes[0]
+	} else {
+		return targetNodes[rand.Intn(len(targetNodes))]
+	}
 }
 
 func randomeAllocateNode(candidate []string) string {
