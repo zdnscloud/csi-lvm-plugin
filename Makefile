@@ -12,8 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+VERSION=`git describe --tags`
+BUILD=`date +%FT%T%z`
+
+LDFLAGS=-ldflags "-w -s -X main.version=${VERSION} -X main.build=${BUILD}"
+GOSRC = $(shell find . -type f -name '*.go')
+
 REGISTRY_NAME = zdnscloud/lvmcsi
-IMAGE_VERSION = v0.2
+IMAGE_VERSION = v0.4
 
 .PHONY: all lvm clean
 
@@ -24,10 +30,10 @@ lvm:
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o ./lvmcsi ./cmd/
 
 lvm-container:
-	docker build -t $(REGISTRY_NAME):$(IMAGE_VERSION) .
+	docker build -t $(REGISTRY_NAME):$(VERSION) .
 
 push-lvm-container: lvm-container
-	docker push $(REGISTRY_NAME):$(IMAGE_VERSION)
+	docker push $(REGISTRY_NAME):$(VERSION)
 
 clean:
 	go clean -r -x
