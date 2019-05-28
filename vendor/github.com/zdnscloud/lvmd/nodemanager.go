@@ -168,6 +168,8 @@ func (m *NodeManager) addNode(n *corev1.Node, checkExists bool) {
 			Size:     size,
 			FreeSize: freeSize,
 		})
+	} else {
+		log.Errorf("get storage size of node %s(%s) failed:%s", n.Name, addr, err.Error())
 	}
 }
 
@@ -180,8 +182,10 @@ func (m *NodeManager) OnUpdate(e event.UpdateEvent) (handler.Result, error) {
 		if isOldReady != isNewReady {
 			m.lock.Lock()
 			if isNewReady {
+				log.Debugf("detected node %s restore to ready", newNode.Name)
 				m.addNode(newNode, true)
 			} else {
+				log.Debugf("detected node %s became unready", newNode.Name)
 				m.deleteNode(newNode.Name)
 			}
 			m.lock.Unlock()
@@ -208,6 +212,7 @@ func (m *NodeManager) OnGeneric(e event.GenericEvent) (handler.Result, error) {
 func (m *NodeManager) deleteNode(name string) {
 	for i, n := range m.nodes {
 		if n.Name == name {
+			log.Warnf("deleted node %s ", name)
 			m.nodes = append(m.nodes[:i], m.nodes[i+1:]...)
 			return
 		}
