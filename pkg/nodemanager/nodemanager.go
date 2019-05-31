@@ -54,7 +54,7 @@ type NodeManager struct {
 	vgSizeGetter VGSizeGetter //for test
 }
 
-func NewNodeManager(c cache.Cache, vgName string) *NodeManager {
+func New(c cache.Cache, vgName string) *NodeManager {
 	ctrl := controller.New("lvmNodeManager", c, scheme.Scheme)
 	ctrl.Watch(&corev1.Node{})
 

@@ -52,7 +52,7 @@ func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
 	a := &NodeAllocator{
 		stopCh:       stopCh,
 		cache:        c,
-		lvmNodes:     nodemanager.NewNodeManager(c, vgName),
+		lvmNodes:     nodemanager.New(c, vgName),
 		statefulsets: make(map[string]StatefulSetList),
 		knownPVC:     make(map[k8stypes.UID]*StatefulSet),
 	}
