@@ -20,7 +20,7 @@ import (
 	"context"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"github.com/kubernetes-csi/drivers/pkg/csi-common"
+	"github.com/zdnscloud/csi-lvm-plugin/pkg/csi-common"
 )
 
 type identityServer struct {

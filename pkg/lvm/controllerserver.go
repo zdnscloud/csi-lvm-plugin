@@ -17,6 +17,7 @@ limitations under the License.
 package lvm
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -28,9 +29,10 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"github.com/kubernetes-csi/drivers/pkg/csi-common"
 	"github.com/zdnscloud/cement/log"
-	"github.com/zdnscloud/lvmd"
+	"github.com/zdnscloud/csi-lvm-plugin/pkg/csi-common"
+	lvmdclient "github.com/zdnscloud/lvmd/client"
+	pb "github.com/zdnscloud/lvmd/proto"
 )
 
 const (
@@ -130,29 +132,39 @@ func (cs *controllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("Failed to getLVMDAddr for %v: %v", node, err))
 	}
 
-	conn, err := lvmd.NewLVMConnection(addr, ConnectTimeout)
-	defer conn.Close()
+	conn, err := lvmdclient.New(addr, ConnectTimeout)
 	if err != nil {
 		return nil, status.Error(codes.Internal, fmt.Sprintf("Failed to connect to %v: %v", addr, err))
 	}
+	defer conn.Close()
 
-	if _, size, err := conn.GetLV(ctx, cs.vgName, vid); err == nil {
-		if err := conn.RemoveLV(ctx, cs.vgName, vid); err != nil {
-			return nil, status.Errorf(
-				codes.Internal,
-				"Failed to remove volume: err=%v",
-				err)
-		}
-		log.Debugf("release %v bytes from node %s", size, node)
-		cs.allocator.Release(node, size)
+	rsp, err := conn.ListLV(ctx, &pb.ListLVRequest{
+		VolumeGroup: fmt.Sprintf("%s/%s", cs.vgName, vid),
+	})
+	if err != nil {
+		return nil, err
+	}
+	lvs := rsp.GetVolumes()
+	if len(lvs) != 1 {
+		return nil, errors.New("Volume %v not exists")
 	}
 
-	response := &csi.DeleteVolumeResponse{}
-	return response, nil
-}
+	size := lvs[0].GetSize()
 
-func (cs *controllerServer) ControllerExpandVolume(ctx context.Context, req *csi.ControllerExpandVolumeRequest) (*csi.ControllerExpandVolumeResponse, error) {
-	return &csi.ControllerExpandVolumeResponse{}, nil
+	_, err = conn.RemoveLV(ctx, &pb.RemoveLVRequest{
+		VolumeGroup: cs.vgName,
+		Name:        vid,
+	})
+	if err == nil {
+		log.Debugf("release %v bytes from node %s", size, node)
+		cs.allocator.Release(node, size)
+		return &csi.DeleteVolumeResponse{}, nil
+	} else {
+		return nil, status.Errorf(
+			codes.Internal,
+			"Failed to remove volume: err=%v",
+			err)
+	}
 }
 
 func useGigaUnit(size int64) int64 {

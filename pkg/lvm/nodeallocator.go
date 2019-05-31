@@ -13,13 +13,13 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 
 	"github.com/zdnscloud/cement/log"
+	"github.com/zdnscloud/csi-lvm-plugin/pkg/nodemanager"
 	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 	"github.com/zdnscloud/gok8s/controller"
 	"github.com/zdnscloud/gok8s/event"
 	"github.com/zdnscloud/gok8s/handler"
 	"github.com/zdnscloud/gok8s/predicate"
-	"github.com/zdnscloud/lvmd"
 )
 
 type StatefulSet struct {
@@ -37,7 +37,7 @@ type NodeAllocator struct {
 	lock         sync.Mutex
 	statefulsets map[string]StatefulSetList
 	knownPVC     map[k8stypes.UID]*StatefulSet
-	lvmNodes     *lvmd.NodeManager
+	lvmNodes     *nodemanager.NodeManager
 }
 
 func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
@@ -52,7 +52,7 @@ func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
 	a := &NodeAllocator{
 		stopCh:       stopCh,
 		cache:        c,
-		lvmNodes:     lvmd.NewNodeManager(c, vgName),
+		lvmNodes:     nodemanager.NewNodeManager(c, vgName),
 		statefulsets: make(map[string]StatefulSetList),
 		knownPVC:     make(map[k8stypes.UID]*StatefulSet),
 	}
@@ -77,7 +77,7 @@ func (a *NodeAllocator) initStatefulSet() {
 func (a *NodeAllocator) AllocateNodeForRequest(pvcUID string, size uint64) (node string, err error) {
 	candidates := a.lvmNodes.GetNodesHasFreeSize(size)
 	if len(candidates) == 0 {
-		return "", lvmd.ErrNoEnoughFreeSpace
+		return "", nodemanager.ErrNoEnoughFreeSpace
 	}
 
 	a.lock.Lock()

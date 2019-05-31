@@ -31,9 +31,10 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
-	"github.com/kubernetes-csi/drivers/pkg/csi-common"
 	"github.com/zdnscloud/cement/log"
-	"github.com/zdnscloud/lvmd"
+	"github.com/zdnscloud/csi-lvm-plugin/pkg/csi-common"
+	lvmdclient "github.com/zdnscloud/lvmd/client"
+	pb "github.com/zdnscloud/lvmd/proto"
 )
 
 type nodeServer struct {
@@ -74,13 +75,13 @@ func (ns *nodeServer) createVolume(ctx context.Context, volumeId string) (*v1.Pe
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Failed to getLVMDAddr for %v: %v", node, err))
 	}
 
-	conn, err := lvmd.NewLVMConnection(addr, ConnectTimeout)
-	defer conn.Close()
+	conn, err := lvmdclient.New(addr, ConnectTimeout)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Failed to connect to %v: %v", addr, err))
 	}
+	defer conn.Close()
 
-	resp, err := conn.CreateLV(ctx, &lvmd.LVMOptions{
+	resp, err := conn.CreateLV(ctx, &pb.CreateLVRequest{
 		VolumeGroup: ns.vgName,
 		Name:        volumeId,
 		Size:        uint64(size),
@@ -197,8 +198,4 @@ func (ns *nodeServer) NodeUnstageVolume(ctx context.Context, req *csi.NodeUnstag
 
 func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVolumeRequest) (*csi.NodeStageVolumeResponse, error) {
 	return &csi.NodeStageVolumeResponse{}, nil
-}
-
-func (ns *nodeServer) NodeExpandVolume(ctx context.Context, req *csi.NodeExpandVolumeRequest) (*csi.NodeExpandVolumeResponse, error) {
-	return &csi.NodeExpandVolumeResponse{}, nil
 }

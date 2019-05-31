@@ -28,5 +28,10 @@ func Errorf(fmt string, args ...interface{}) error {
 
 func Fatalf(fmt string, args ...interface{}) {
 	gLogger.Error(fmt, args...)
+	gLogger.Close()
 	os.Exit(1)
+}
+
+func CloseLogger() {
+	gLogger.Close()
 }

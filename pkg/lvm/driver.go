@@ -21,8 +21,8 @@ import (
 	"github.com/zdnscloud/gok8s/cache"
 	"github.com/zdnscloud/gok8s/client"
 
-	"github.com/kubernetes-csi/drivers/pkg/csi-common"
 	"github.com/zdnscloud/cement/log"
+	"github.com/zdnscloud/csi-lvm-plugin/pkg/csi-common"
 )
 
 type Driver struct {
