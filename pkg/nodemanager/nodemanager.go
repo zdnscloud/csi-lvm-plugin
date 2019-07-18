@@ -190,17 +190,15 @@ func (m *NodeManager) AddNode(k8snode *corev1.Node) {
 func (m *NodeManager) OnUpdate(e event.UpdateEvent) (handler.Result, error) {
 	old := e.ObjectOld.(*corev1.Node)
 	newNode := e.ObjectNew.(*corev1.Node)
-	if isStorageNode(newNode) {
-		isOldReady := isNodeReady(old)
-		isNewReady := isNodeReady(newNode)
-		if isOldReady != isNewReady {
-			if isNewReady {
-				log.Debugf("detected node %s restore to ready", newNode.Name)
-				m.AddNode(newNode)
-			} else {
-				log.Debugf("detected node %s became unready", newNode.Name)
-				m.DeleteNode(newNode.Name)
-			}
+	isOldReady := isStorageNode(old) && isNodeReady(old)
+	isNewReady := isStorageNode(newNode) && isNodeReady(newNode)
+	if isOldReady != isNewReady {
+		if isNewReady {
+			log.Debugf("detected node %s restore to ready", newNode.Name)
+			m.AddNode(newNode)
+		} else {
+			log.Debugf("detected node %s became unready", newNode.Name)
+			m.DeleteNode(newNode.Name)
 		}
 	}
 

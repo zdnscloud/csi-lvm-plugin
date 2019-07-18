@@ -19,7 +19,7 @@ LDFLAGS=-ldflags "-w -s -X main.version=${VERSION} -X main.build=${BUILD}"
 GOSRC = $(shell find . -type f -name '*.go')
 
 REGISTRY_NAME = zdnscloud/lvmcsi
-IMAGE_VERSION = v0.4
+IMAGE_VERSION = v0.6
 
 .PHONY: all lvm clean
 
