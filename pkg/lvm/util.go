@@ -9,6 +9,7 @@ import (
 
 	"github.com/zdnscloud/gok8s/client"
 	"k8s.io/api/core/v1"
+	storagev1 "k8s.io/api/storage/v1"
 	k8stypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/kubernetes/pkg/kubelet/apis"
 	utilnode "k8s.io/kubernetes/pkg/util/node"
@@ -131,4 +132,19 @@ func determineFilesystemType(devicePath string) (string, error) {
 		}
 	}
 	return "", parseErr
+}
+
+func isAttached(cli client.Client, pvname string) (bool, error) {
+	volumeattachments := storagev1.VolumeAttachmentList{}
+	err := cli.List(context.TODO(), nil, &volumeattachments)
+	if err != nil {
+		return true, err
+	}
+	for _, volumeattachment := range volumeattachments.Items {
+		if *volumeattachment.Spec.Source.PersistentVolumeName != pvname {
+			continue
+		}
+		return volumeattachment.Status.Attached, nil
+	}
+	return false, nil
 }

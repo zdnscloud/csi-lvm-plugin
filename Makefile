@@ -20,6 +20,7 @@ GOSRC = $(shell find . -type f -name '*.go')
 
 REGISTRY_NAME = zdnscloud/lvmcsi
 IMAGE_VERSION = v0.6
+VERSION=${IMAGE_VERSION}
 
 .PHONY: all lvm clean
 

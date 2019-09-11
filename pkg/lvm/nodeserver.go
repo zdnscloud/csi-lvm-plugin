@@ -136,7 +136,7 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 		// There is no existing filesystem on the
 		// device, format it with the requested
 		// filesystem.
-		log.Infof("The device %v has no existing filesystem, formatting with %v", devicePath, existingFstype)
+		log.Infof("The device %v has no existing filesystem, formatting with %v", devicePath, DefaultFS)
 		if err := formatDevice(devicePath, DefaultFS); err != nil {
 			return nil, status.Errorf(
 				codes.Internal,

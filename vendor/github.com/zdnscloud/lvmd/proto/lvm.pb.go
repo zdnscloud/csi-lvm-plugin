@@ -943,6 +943,100 @@ func (m *CloneLVReply) GetCommandOutput() string {
 	return ""
 }
 
+type ResizeLVRequest struct {
+	VolumeGroup          string   `protobuf:"bytes,1,opt,name=volume_group,json=volumeGroup,proto3" json:"volume_group,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Size                 uint64   `protobuf:"varint,3,opt,name=size,proto3" json:"size,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ResizeLVRequest) Reset()         { *m = ResizeLVRequest{} }
+func (m *ResizeLVRequest) String() string { return proto.CompactTextString(m) }
+func (*ResizeLVRequest) ProtoMessage()    {}
+func (*ResizeLVRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{10}
+}
+
+func (m *ResizeLVRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ResizeLVRequest.Unmarshal(m, b)
+}
+func (m *ResizeLVRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ResizeLVRequest.Marshal(b, m, deterministic)
+}
+func (m *ResizeLVRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ResizeLVRequest.Merge(m, src)
+}
+func (m *ResizeLVRequest) XXX_Size() int {
+	return xxx_messageInfo_ResizeLVRequest.Size(m)
+}
+func (m *ResizeLVRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ResizeLVRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ResizeLVRequest proto.InternalMessageInfo
+
+func (m *ResizeLVRequest) GetVolumeGroup() string {
+	if m != nil {
+		return m.VolumeGroup
+	}
+	return ""
+}
+
+func (m *ResizeLVRequest) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *ResizeLVRequest) GetSize() uint64 {
+	if m != nil {
+		return m.Size
+	}
+	return 0
+}
+
+type ResizeLVReply struct {
+	CommandOutput        string   `protobuf:"bytes,1,opt,name=command_output,json=commandOutput,proto3" json:"command_output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ResizeLVReply) Reset()         { *m = ResizeLVReply{} }
+func (m *ResizeLVReply) String() string { return proto.CompactTextString(m) }
+func (*ResizeLVReply) ProtoMessage()    {}
+func (*ResizeLVReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{11}
+}
+
+func (m *ResizeLVReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ResizeLVReply.Unmarshal(m, b)
+}
+func (m *ResizeLVReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ResizeLVReply.Marshal(b, m, deterministic)
+}
+func (m *ResizeLVReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ResizeLVReply.Merge(m, src)
+}
+func (m *ResizeLVReply) XXX_Size() int {
+	return xxx_messageInfo_ResizeLVReply.Size(m)
+}
+func (m *ResizeLVReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_ResizeLVReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ResizeLVReply proto.InternalMessageInfo
+
+func (m *ResizeLVReply) GetCommandOutput() string {
+	if m != nil {
+		return m.CommandOutput
+	}
+	return ""
+}
+
 type ListVGRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -953,7 +1047,7 @@ func (m *ListVGRequest) Reset()         { *m = ListVGRequest{} }
 func (m *ListVGRequest) String() string { return proto.CompactTextString(m) }
 func (*ListVGRequest) ProtoMessage()    {}
 func (*ListVGRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{10}
+	return fileDescriptor_8cc5677814b58357, []int{12}
 }
 
 func (m *ListVGRequest) XXX_Unmarshal(b []byte) error {
@@ -985,7 +1079,7 @@ func (m *ListVGReply) Reset()         { *m = ListVGReply{} }
 func (m *ListVGReply) String() string { return proto.CompactTextString(m) }
 func (*ListVGReply) ProtoMessage()    {}
 func (*ListVGReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{11}
+	return fileDescriptor_8cc5677814b58357, []int{13}
 }
 
 func (m *ListVGReply) XXX_Unmarshal(b []byte) error {
@@ -1026,7 +1120,7 @@ func (m *CreateVGRequest) Reset()         { *m = CreateVGRequest{} }
 func (m *CreateVGRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateVGRequest) ProtoMessage()    {}
 func (*CreateVGRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{12}
+	return fileDescriptor_8cc5677814b58357, []int{14}
 }
 
 func (m *CreateVGRequest) XXX_Unmarshal(b []byte) error {
@@ -1079,7 +1173,7 @@ func (m *CreateVGReply) Reset()         { *m = CreateVGReply{} }
 func (m *CreateVGReply) String() string { return proto.CompactTextString(m) }
 func (*CreateVGReply) ProtoMessage()    {}
 func (*CreateVGReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{13}
+	return fileDescriptor_8cc5677814b58357, []int{15}
 }
 
 func (m *CreateVGReply) XXX_Unmarshal(b []byte) error {
@@ -1118,7 +1212,7 @@ func (m *RemoveVGRequest) Reset()         { *m = RemoveVGRequest{} }
 func (m *RemoveVGRequest) String() string { return proto.CompactTextString(m) }
 func (*RemoveVGRequest) ProtoMessage()    {}
 func (*RemoveVGRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{14}
+	return fileDescriptor_8cc5677814b58357, []int{16}
 }
 
 func (m *RemoveVGRequest) XXX_Unmarshal(b []byte) error {
@@ -1157,7 +1251,7 @@ func (m *RemoveVGReply) Reset()         { *m = RemoveVGReply{} }
 func (m *RemoveVGReply) String() string { return proto.CompactTextString(m) }
 func (*RemoveVGReply) ProtoMessage()    {}
 func (*RemoveVGReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{15}
+	return fileDescriptor_8cc5677814b58357, []int{17}
 }
 
 func (m *RemoveVGReply) XXX_Unmarshal(b []byte) error {
@@ -1185,6 +1279,92 @@ func (m *RemoveVGReply) GetCommandOutput() string {
 	return ""
 }
 
+type ExtendVGRequest struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	PhysicalVolume       string   `protobuf:"bytes,2,opt,name=physical_volume,json=physicalVolume,proto3" json:"physical_volume,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ExtendVGRequest) Reset()         { *m = ExtendVGRequest{} }
+func (m *ExtendVGRequest) String() string { return proto.CompactTextString(m) }
+func (*ExtendVGRequest) ProtoMessage()    {}
+func (*ExtendVGRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{18}
+}
+
+func (m *ExtendVGRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ExtendVGRequest.Unmarshal(m, b)
+}
+func (m *ExtendVGRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ExtendVGRequest.Marshal(b, m, deterministic)
+}
+func (m *ExtendVGRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExtendVGRequest.Merge(m, src)
+}
+func (m *ExtendVGRequest) XXX_Size() int {
+	return xxx_messageInfo_ExtendVGRequest.Size(m)
+}
+func (m *ExtendVGRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExtendVGRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExtendVGRequest proto.InternalMessageInfo
+
+func (m *ExtendVGRequest) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *ExtendVGRequest) GetPhysicalVolume() string {
+	if m != nil {
+		return m.PhysicalVolume
+	}
+	return ""
+}
+
+type ExtendVGReply struct {
+	CommandOutput        string   `protobuf:"bytes,1,opt,name=command_output,json=commandOutput,proto3" json:"command_output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ExtendVGReply) Reset()         { *m = ExtendVGReply{} }
+func (m *ExtendVGReply) String() string { return proto.CompactTextString(m) }
+func (*ExtendVGReply) ProtoMessage()    {}
+func (*ExtendVGReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{19}
+}
+
+func (m *ExtendVGReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ExtendVGReply.Unmarshal(m, b)
+}
+func (m *ExtendVGReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ExtendVGReply.Marshal(b, m, deterministic)
+}
+func (m *ExtendVGReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExtendVGReply.Merge(m, src)
+}
+func (m *ExtendVGReply) XXX_Size() int {
+	return xxx_messageInfo_ExtendVGReply.Size(m)
+}
+func (m *ExtendVGReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExtendVGReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExtendVGReply proto.InternalMessageInfo
+
+func (m *ExtendVGReply) GetCommandOutput() string {
+	if m != nil {
+		return m.CommandOutput
+	}
+	return ""
+}
+
 type AddTagLVRequest struct {
 	VolumeGroup          string   `protobuf:"bytes,1,opt,name=volume_group,json=volumeGroup,proto3" json:"volume_group,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -1198,7 +1378,7 @@ func (m *AddTagLVRequest) Reset()         { *m = AddTagLVRequest{} }
 func (m *AddTagLVRequest) String() string { return proto.CompactTextString(m) }
 func (*AddTagLVRequest) ProtoMessage()    {}
 func (*AddTagLVRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{16}
+	return fileDescriptor_8cc5677814b58357, []int{20}
 }
 
 func (m *AddTagLVRequest) XXX_Unmarshal(b []byte) error {
@@ -1251,7 +1431,7 @@ func (m *AddTagLVReply) Reset()         { *m = AddTagLVReply{} }
 func (m *AddTagLVReply) String() string { return proto.CompactTextString(m) }
 func (*AddTagLVReply) ProtoMessage()    {}
 func (*AddTagLVReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{17}
+	return fileDescriptor_8cc5677814b58357, []int{21}
 }
 
 func (m *AddTagLVReply) XXX_Unmarshal(b []byte) error {
@@ -1292,7 +1472,7 @@ func (m *RemoveTagLVRequest) Reset()         { *m = RemoveTagLVRequest{} }
 func (m *RemoveTagLVRequest) String() string { return proto.CompactTextString(m) }
 func (*RemoveTagLVRequest) ProtoMessage()    {}
 func (*RemoveTagLVRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{18}
+	return fileDescriptor_8cc5677814b58357, []int{22}
 }
 
 func (m *RemoveTagLVRequest) XXX_Unmarshal(b []byte) error {
@@ -1345,7 +1525,7 @@ func (m *RemoveTagLVReply) Reset()         { *m = RemoveTagLVReply{} }
 func (m *RemoveTagLVReply) String() string { return proto.CompactTextString(m) }
 func (*RemoveTagLVReply) ProtoMessage()    {}
 func (*RemoveTagLVReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8cc5677814b58357, []int{19}
+	return fileDescriptor_8cc5677814b58357, []int{23}
 }
 
 func (m *RemoveTagLVReply) XXX_Unmarshal(b []byte) error {
@@ -1373,6 +1553,584 @@ func (m *RemoveTagLVReply) GetCommandOutput() string {
 	return ""
 }
 
+type CreatePVRequest struct {
+	Block                string   `protobuf:"bytes,1,opt,name=block,proto3" json:"block,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreatePVRequest) Reset()         { *m = CreatePVRequest{} }
+func (m *CreatePVRequest) String() string { return proto.CompactTextString(m) }
+func (*CreatePVRequest) ProtoMessage()    {}
+func (*CreatePVRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{24}
+}
+
+func (m *CreatePVRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreatePVRequest.Unmarshal(m, b)
+}
+func (m *CreatePVRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreatePVRequest.Marshal(b, m, deterministic)
+}
+func (m *CreatePVRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreatePVRequest.Merge(m, src)
+}
+func (m *CreatePVRequest) XXX_Size() int {
+	return xxx_messageInfo_CreatePVRequest.Size(m)
+}
+func (m *CreatePVRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreatePVRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreatePVRequest proto.InternalMessageInfo
+
+func (m *CreatePVRequest) GetBlock() string {
+	if m != nil {
+		return m.Block
+	}
+	return ""
+}
+
+type CreatePVReply struct {
+	CommandOutput        string   `protobuf:"bytes,1,opt,name=command_output,json=commandOutput,proto3" json:"command_output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreatePVReply) Reset()         { *m = CreatePVReply{} }
+func (m *CreatePVReply) String() string { return proto.CompactTextString(m) }
+func (*CreatePVReply) ProtoMessage()    {}
+func (*CreatePVReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{25}
+}
+
+func (m *CreatePVReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreatePVReply.Unmarshal(m, b)
+}
+func (m *CreatePVReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreatePVReply.Marshal(b, m, deterministic)
+}
+func (m *CreatePVReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreatePVReply.Merge(m, src)
+}
+func (m *CreatePVReply) XXX_Size() int {
+	return xxx_messageInfo_CreatePVReply.Size(m)
+}
+func (m *CreatePVReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreatePVReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreatePVReply proto.InternalMessageInfo
+
+func (m *CreatePVReply) GetCommandOutput() string {
+	if m != nil {
+		return m.CommandOutput
+	}
+	return ""
+}
+
+type RemovePVRequest struct {
+	Block                string   `protobuf:"bytes,1,opt,name=block,proto3" json:"block,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RemovePVRequest) Reset()         { *m = RemovePVRequest{} }
+func (m *RemovePVRequest) String() string { return proto.CompactTextString(m) }
+func (*RemovePVRequest) ProtoMessage()    {}
+func (*RemovePVRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{26}
+}
+
+func (m *RemovePVRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RemovePVRequest.Unmarshal(m, b)
+}
+func (m *RemovePVRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RemovePVRequest.Marshal(b, m, deterministic)
+}
+func (m *RemovePVRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RemovePVRequest.Merge(m, src)
+}
+func (m *RemovePVRequest) XXX_Size() int {
+	return xxx_messageInfo_RemovePVRequest.Size(m)
+}
+func (m *RemovePVRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RemovePVRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RemovePVRequest proto.InternalMessageInfo
+
+func (m *RemovePVRequest) GetBlock() string {
+	if m != nil {
+		return m.Block
+	}
+	return ""
+}
+
+type RemovePVReply struct {
+	CommandOutput        string   `protobuf:"bytes,1,opt,name=command_output,json=commandOutput,proto3" json:"command_output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RemovePVReply) Reset()         { *m = RemovePVReply{} }
+func (m *RemovePVReply) String() string { return proto.CompactTextString(m) }
+func (*RemovePVReply) ProtoMessage()    {}
+func (*RemovePVReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{27}
+}
+
+func (m *RemovePVReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RemovePVReply.Unmarshal(m, b)
+}
+func (m *RemovePVReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RemovePVReply.Marshal(b, m, deterministic)
+}
+func (m *RemovePVReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RemovePVReply.Merge(m, src)
+}
+func (m *RemovePVReply) XXX_Size() int {
+	return xxx_messageInfo_RemovePVReply.Size(m)
+}
+func (m *RemovePVReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_RemovePVReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RemovePVReply proto.InternalMessageInfo
+
+func (m *RemovePVReply) GetCommandOutput() string {
+	if m != nil {
+		return m.CommandOutput
+	}
+	return ""
+}
+
+type ListPVRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ListPVRequest) Reset()         { *m = ListPVRequest{} }
+func (m *ListPVRequest) String() string { return proto.CompactTextString(m) }
+func (*ListPVRequest) ProtoMessage()    {}
+func (*ListPVRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{28}
+}
+
+func (m *ListPVRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListPVRequest.Unmarshal(m, b)
+}
+func (m *ListPVRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListPVRequest.Marshal(b, m, deterministic)
+}
+func (m *ListPVRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListPVRequest.Merge(m, src)
+}
+func (m *ListPVRequest) XXX_Size() int {
+	return xxx_messageInfo_ListPVRequest.Size(m)
+}
+func (m *ListPVRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListPVRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListPVRequest proto.InternalMessageInfo
+
+type ListPVReply struct {
+	Pvinfos              []*PVInfo `protobuf:"bytes,1,rep,name=pvinfos,proto3" json:"pvinfos,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *ListPVReply) Reset()         { *m = ListPVReply{} }
+func (m *ListPVReply) String() string { return proto.CompactTextString(m) }
+func (*ListPVReply) ProtoMessage()    {}
+func (*ListPVReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{29}
+}
+
+func (m *ListPVReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListPVReply.Unmarshal(m, b)
+}
+func (m *ListPVReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListPVReply.Marshal(b, m, deterministic)
+}
+func (m *ListPVReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListPVReply.Merge(m, src)
+}
+func (m *ListPVReply) XXX_Size() int {
+	return xxx_messageInfo_ListPVReply.Size(m)
+}
+func (m *ListPVReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListPVReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListPVReply proto.InternalMessageInfo
+
+func (m *ListPVReply) GetPvinfos() []*PVInfo {
+	if m != nil {
+		return m.Pvinfos
+	}
+	return nil
+}
+
+type PVInfo struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Uuid                 string   `protobuf:"bytes,2,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Fmt                  string   `protobuf:"bytes,3,opt,name=fmt,proto3" json:"fmt,omitempty"`
+	Size                 uint64   `protobuf:"varint,4,opt,name=size,proto3" json:"size,omitempty"`
+	Usize                uint64   `protobuf:"varint,5,opt,name=usize,proto3" json:"usize,omitempty"`
+	Fsize                uint64   `protobuf:"varint,6,opt,name=fsize,proto3" json:"fsize,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PVInfo) Reset()         { *m = PVInfo{} }
+func (m *PVInfo) String() string { return proto.CompactTextString(m) }
+func (*PVInfo) ProtoMessage()    {}
+func (*PVInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{30}
+}
+
+func (m *PVInfo) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PVInfo.Unmarshal(m, b)
+}
+func (m *PVInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PVInfo.Marshal(b, m, deterministic)
+}
+func (m *PVInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PVInfo.Merge(m, src)
+}
+func (m *PVInfo) XXX_Size() int {
+	return xxx_messageInfo_PVInfo.Size(m)
+}
+func (m *PVInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_PVInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PVInfo proto.InternalMessageInfo
+
+func (m *PVInfo) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *PVInfo) GetUuid() string {
+	if m != nil {
+		return m.Uuid
+	}
+	return ""
+}
+
+func (m *PVInfo) GetFmt() string {
+	if m != nil {
+		return m.Fmt
+	}
+	return ""
+}
+
+func (m *PVInfo) GetSize() uint64 {
+	if m != nil {
+		return m.Size
+	}
+	return 0
+}
+
+func (m *PVInfo) GetUsize() uint64 {
+	if m != nil {
+		return m.Usize
+	}
+	return 0
+}
+
+func (m *PVInfo) GetFsize() uint64 {
+	if m != nil {
+		return m.Fsize
+	}
+	return 0
+}
+
+type ValidateRequest struct {
+	Block                string   `protobuf:"bytes,1,opt,name=block,proto3" json:"block,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ValidateRequest) Reset()         { *m = ValidateRequest{} }
+func (m *ValidateRequest) String() string { return proto.CompactTextString(m) }
+func (*ValidateRequest) ProtoMessage()    {}
+func (*ValidateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{31}
+}
+
+func (m *ValidateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ValidateRequest.Unmarshal(m, b)
+}
+func (m *ValidateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ValidateRequest.Marshal(b, m, deterministic)
+}
+func (m *ValidateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ValidateRequest.Merge(m, src)
+}
+func (m *ValidateRequest) XXX_Size() int {
+	return xxx_messageInfo_ValidateRequest.Size(m)
+}
+func (m *ValidateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ValidateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ValidateRequest proto.InternalMessageInfo
+
+func (m *ValidateRequest) GetBlock() string {
+	if m != nil {
+		return m.Block
+	}
+	return ""
+}
+
+type ValidateReply struct {
+	Validate             bool     `protobuf:"varint,1,opt,name=validate,proto3" json:"validate,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ValidateReply) Reset()         { *m = ValidateReply{} }
+func (m *ValidateReply) String() string { return proto.CompactTextString(m) }
+func (*ValidateReply) ProtoMessage()    {}
+func (*ValidateReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{32}
+}
+
+func (m *ValidateReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ValidateReply.Unmarshal(m, b)
+}
+func (m *ValidateReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ValidateReply.Marshal(b, m, deterministic)
+}
+func (m *ValidateReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ValidateReply.Merge(m, src)
+}
+func (m *ValidateReply) XXX_Size() int {
+	return xxx_messageInfo_ValidateReply.Size(m)
+}
+func (m *ValidateReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_ValidateReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ValidateReply proto.InternalMessageInfo
+
+func (m *ValidateReply) GetValidate() bool {
+	if m != nil {
+		return m.Validate
+	}
+	return false
+}
+
+type DestoryRequest struct {
+	Block                string   `protobuf:"bytes,1,opt,name=block,proto3" json:"block,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DestoryRequest) Reset()         { *m = DestoryRequest{} }
+func (m *DestoryRequest) String() string { return proto.CompactTextString(m) }
+func (*DestoryRequest) ProtoMessage()    {}
+func (*DestoryRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{33}
+}
+
+func (m *DestoryRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DestoryRequest.Unmarshal(m, b)
+}
+func (m *DestoryRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DestoryRequest.Marshal(b, m, deterministic)
+}
+func (m *DestoryRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DestoryRequest.Merge(m, src)
+}
+func (m *DestoryRequest) XXX_Size() int {
+	return xxx_messageInfo_DestoryRequest.Size(m)
+}
+func (m *DestoryRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DestoryRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DestoryRequest proto.InternalMessageInfo
+
+func (m *DestoryRequest) GetBlock() string {
+	if m != nil {
+		return m.Block
+	}
+	return ""
+}
+
+type DestoryReply struct {
+	CommandOutput        string   `protobuf:"bytes,1,opt,name=command_output,json=commandOutput,proto3" json:"command_output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DestoryReply) Reset()         { *m = DestoryReply{} }
+func (m *DestoryReply) String() string { return proto.CompactTextString(m) }
+func (*DestoryReply) ProtoMessage()    {}
+func (*DestoryReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{34}
+}
+
+func (m *DestoryReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DestoryReply.Unmarshal(m, b)
+}
+func (m *DestoryReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DestoryReply.Marshal(b, m, deterministic)
+}
+func (m *DestoryReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DestoryReply.Merge(m, src)
+}
+func (m *DestoryReply) XXX_Size() int {
+	return xxx_messageInfo_DestoryReply.Size(m)
+}
+func (m *DestoryReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_DestoryReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DestoryReply proto.InternalMessageInfo
+
+func (m *DestoryReply) GetCommandOutput() string {
+	if m != nil {
+		return m.CommandOutput
+	}
+	return ""
+}
+
+type MatchRequest struct {
+	Block                string   `protobuf:"bytes,1,opt,name=block,proto3" json:"block,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *MatchRequest) Reset()         { *m = MatchRequest{} }
+func (m *MatchRequest) String() string { return proto.CompactTextString(m) }
+func (*MatchRequest) ProtoMessage()    {}
+func (*MatchRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{35}
+}
+
+func (m *MatchRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MatchRequest.Unmarshal(m, b)
+}
+func (m *MatchRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MatchRequest.Marshal(b, m, deterministic)
+}
+func (m *MatchRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MatchRequest.Merge(m, src)
+}
+func (m *MatchRequest) XXX_Size() int {
+	return xxx_messageInfo_MatchRequest.Size(m)
+}
+func (m *MatchRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MatchRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MatchRequest proto.InternalMessageInfo
+
+func (m *MatchRequest) GetBlock() string {
+	if m != nil {
+		return m.Block
+	}
+	return ""
+}
+
+type MatchReply struct {
+	CommandOutput        string   `protobuf:"bytes,1,opt,name=command_output,json=commandOutput,proto3" json:"command_output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *MatchReply) Reset()         { *m = MatchReply{} }
+func (m *MatchReply) String() string { return proto.CompactTextString(m) }
+func (*MatchReply) ProtoMessage()    {}
+func (*MatchReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{36}
+}
+
+func (m *MatchReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MatchReply.Unmarshal(m, b)
+}
+func (m *MatchReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MatchReply.Marshal(b, m, deterministic)
+}
+func (m *MatchReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MatchReply.Merge(m, src)
+}
+func (m *MatchReply) XXX_Size() int {
+	return xxx_messageInfo_MatchReply.Size(m)
+}
+func (m *MatchReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_MatchReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MatchReply proto.InternalMessageInfo
+
+func (m *MatchReply) GetCommandOutput() string {
+	if m != nil {
+		return m.CommandOutput
+	}
+	return ""
+}
+
+type GetPVNumReply struct {
+	CommandOutput        string   `protobuf:"bytes,1,opt,name=command_output,json=commandOutput,proto3" json:"command_output,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetPVNumReply) Reset()         { *m = GetPVNumReply{} }
+func (m *GetPVNumReply) String() string { return proto.CompactTextString(m) }
+func (*GetPVNumReply) ProtoMessage()    {}
+func (*GetPVNumReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8cc5677814b58357, []int{37}
+}
+
+func (m *GetPVNumReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetPVNumReply.Unmarshal(m, b)
+}
+func (m *GetPVNumReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetPVNumReply.Marshal(b, m, deterministic)
+}
+func (m *GetPVNumReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetPVNumReply.Merge(m, src)
+}
+func (m *GetPVNumReply) XXX_Size() int {
+	return xxx_messageInfo_GetPVNumReply.Size(m)
+}
+func (m *GetPVNumReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetPVNumReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetPVNumReply proto.InternalMessageInfo
+
+func (m *GetPVNumReply) GetCommandOutput() string {
+	if m != nil {
+		return m.CommandOutput
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterEnum("lvm.LogicalVolume_Attributes_Type", LogicalVolume_Attributes_Type_name, LogicalVolume_Attributes_Type_value)
 	proto.RegisterEnum("lvm.LogicalVolume_Attributes_Permissions", LogicalVolume_Attributes_Permissions_name, LogicalVolume_Attributes_Permissions_value)
@@ -1391,118 +2149,157 @@ func init() {
 	proto.RegisterType((*RemoveLVReply)(nil), "lvm.RemoveLVReply")
 	proto.RegisterType((*CloneLVRequest)(nil), "lvm.CloneLVRequest")
 	proto.RegisterType((*CloneLVReply)(nil), "lvm.CloneLVReply")
+	proto.RegisterType((*ResizeLVRequest)(nil), "lvm.ResizeLVRequest")
+	proto.RegisterType((*ResizeLVReply)(nil), "lvm.ResizeLVReply")
 	proto.RegisterType((*ListVGRequest)(nil), "lvm.ListVGRequest")
 	proto.RegisterType((*ListVGReply)(nil), "lvm.ListVGReply")
 	proto.RegisterType((*CreateVGRequest)(nil), "lvm.CreateVGRequest")
 	proto.RegisterType((*CreateVGReply)(nil), "lvm.CreateVGReply")
 	proto.RegisterType((*RemoveVGRequest)(nil), "lvm.RemoveVGRequest")
 	proto.RegisterType((*RemoveVGReply)(nil), "lvm.RemoveVGReply")
+	proto.RegisterType((*ExtendVGRequest)(nil), "lvm.ExtendVGRequest")
+	proto.RegisterType((*ExtendVGReply)(nil), "lvm.ExtendVGReply")
 	proto.RegisterType((*AddTagLVRequest)(nil), "lvm.AddTagLVRequest")
 	proto.RegisterType((*AddTagLVReply)(nil), "lvm.AddTagLVReply")
 	proto.RegisterType((*RemoveTagLVRequest)(nil), "lvm.RemoveTagLVRequest")
 	proto.RegisterType((*RemoveTagLVReply)(nil), "lvm.RemoveTagLVReply")
+	proto.RegisterType((*CreatePVRequest)(nil), "lvm.CreatePVRequest")
+	proto.RegisterType((*CreatePVReply)(nil), "lvm.CreatePVReply")
+	proto.RegisterType((*RemovePVRequest)(nil), "lvm.RemovePVRequest")
+	proto.RegisterType((*RemovePVReply)(nil), "lvm.RemovePVReply")
+	proto.RegisterType((*ListPVRequest)(nil), "lvm.ListPVRequest")
+	proto.RegisterType((*ListPVReply)(nil), "lvm.ListPVReply")
+	proto.RegisterType((*PVInfo)(nil), "lvm.PVInfo")
+	proto.RegisterType((*ValidateRequest)(nil), "lvm.ValidateRequest")
+	proto.RegisterType((*ValidateReply)(nil), "lvm.ValidateReply")
+	proto.RegisterType((*DestoryRequest)(nil), "lvm.DestoryRequest")
+	proto.RegisterType((*DestoryReply)(nil), "lvm.DestoryReply")
+	proto.RegisterType((*MatchRequest)(nil), "lvm.MatchRequest")
+	proto.RegisterType((*MatchReply)(nil), "lvm.MatchReply")
+	proto.RegisterType((*GetPVNumReply)(nil), "lvm.GetPVNumReply")
 }
 
 func init() { proto.RegisterFile("lvm.proto", fileDescriptor_8cc5677814b58357) }
 
 var fileDescriptor_8cc5677814b58357 = []byte{
-	// 1536 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x57, 0xdd, 0x6e, 0xdb, 0xc8,
-	0x15, 0xd6, 0xff, 0xcf, 0xa1, 0x25, 0x8d, 0x27, 0x76, 0xa2, 0x38, 0x6d, 0xe3, 0x32, 0x09, 0xea,
-	0x00, 0x8d, 0x51, 0x28, 0x48, 0x80, 0xa0, 0x2d, 0x0a, 0x56, 0x1c, 0x4b, 0x84, 0x29, 0x52, 0x18,
-	0xd2, 0x72, 0x0d, 0x14, 0x98, 0xd2, 0x12, 0xe3, 0xa8, 0x95, 0x44, 0x55, 0xa2, 0x84, 0x75, 0x1e,
-	0x60, 0x2f, 0xf6, 0x7a, 0xb1, 0xef, 0xb5, 0xef, 0xb0, 0xef, 0xb0, 0x77, 0x8b, 0xc5, 0x0c, 0x7f,
-	0x25, 0x7b, 0xbd, 0x36, 0x76, 0xf7, 0x6e, 0xe6, 0x9b, 0xf3, 0xf3, 0xcd, 0x77, 0xce, 0x19, 0x51,
-	0x50, 0x9d, 0xac, 0xa7, 0xc7, 0xf3, 0x85, 0xe7, 0x7b, 0x38, 0x3f, 0x59, 0x4f, 0xe5, 0x6f, 0x10,
-	0xd4, 0x74, 0xef, 0x6a, 0x3c, 0x74, 0x26, 0x03, 0x6f, 0xb2, 0x9a, 0xba, 0x18, 0x43, 0x61, 0xe6,
-	0x4c, 0xdd, 0x66, 0xf6, 0x30, 0x7b, 0x54, 0xa5, 0x62, 0xcd, 0xb1, 0xe5, 0xf8, 0xb3, 0xdb, 0xcc,
-	0x1d, 0x66, 0x8f, 0x0a, 0x54, 0xac, 0x39, 0xb6, 0x5a, 0x8d, 0x47, 0xcd, 0x7c, 0x60, 0xc7, 0xd7,
-	0xf8, 0xef, 0x00, 0x8e, 0xef, 0x2f, 0xc6, 0x97, 0x2b, 0xdf, 0x5d, 0x36, 0x0b, 0x87, 0xd9, 0x23,
-	0xa9, 0xf5, 0xfb, 0x63, 0x9e, 0x72, 0x23, 0xc7, 0xb1, 0x12, 0x1b, 0xd1, 0x94, 0x03, 0xfe, 0x23,
-	0xec, 0x0c, 0xbd, 0xf9, 0x35, 0x9b, 0xbb, 0x8b, 0xa1, 0x3b, 0xf3, 0x9b, 0x45, 0x11, 0x5a, 0xe2,
-	0x58, 0x3f, 0x80, 0xf0, 0x3b, 0x78, 0xe2, 0x0c, 0xfd, 0x95, 0x33, 0x61, 0x23, 0x77, 0xcd, 0xa6,
-	0xce, 0x7f, 0xbd, 0x05, 0x9b, 0xad, 0xa6, 0x97, 0xee, 0xa2, 0x59, 0x3a, 0xcc, 0x1e, 0xd5, 0xe8,
-	0x5e, 0x70, 0xac, 0xba, 0xeb, 0x1e, 0x3f, 0x34, 0xc4, 0xd9, 0xb6, 0xdb, 0x78, 0x96, 0xb8, 0x95,
-	0xb7, 0xdd, 0xf8, 0x61, 0xe8, 0x86, 0xa1, 0xe0, 0x3b, 0x57, 0xcb, 0x66, 0xe5, 0x30, 0xcf, 0xef,
-	0xc8, 0xd7, 0x07, 0xdf, 0xd5, 0x00, 0x12, 0xfe, 0xf8, 0x3d, 0x14, 0xfc, 0xeb, 0x79, 0x20, 0x57,
-	0xbd, 0x25, 0xdf, 0x79, 0xd9, 0x63, 0xfb, 0x7a, 0xee, 0x52, 0x61, 0x8f, 0x4f, 0x41, 0x9a, 0xbb,
-	0x8b, 0xe9, 0x78, 0xb9, 0x1c, 0x7b, 0xb3, 0xa5, 0x50, 0xb6, 0xde, 0x7a, 0x7d, 0xb7, 0x7b, 0x3f,
-	0x71, 0xa0, 0x69, 0x6f, 0xdc, 0x05, 0x70, 0x26, 0x13, 0x6f, 0xe8, 0xf8, 0x63, 0x6f, 0x26, 0x2a,
-	0x52, 0x6f, 0x1d, 0xdd, 0x1d, 0x4b, 0x89, 0xed, 0x69, 0xca, 0x17, 0x3f, 0x07, 0xe9, 0xe3, 0xf8,
-	0x0b, 0x77, 0x14, 0x68, 0x24, 0x4a, 0x58, 0xa1, 0x20, 0x20, 0x21, 0x0c, 0xfe, 0x00, 0xc5, 0xa5,
-	0xef, 0xf8, 0xae, 0x28, 0x4e, 0xbd, 0xf5, 0xe2, 0xee, 0x2c, 0x16, 0x37, 0xa5, 0x81, 0x07, 0x57,
-	0xd3, 0x9b, 0xbb, 0x33, 0x51, 0xa8, 0x0a, 0x15, 0x6b, 0xac, 0x81, 0xe4, 0x3b, 0x8b, 0x2b, 0xd7,
-	0x67, 0x42, 0xc5, 0xf2, 0x7d, 0xa8, 0xdb, 0xc2, 0x41, 0x68, 0x09, 0x7e, 0xbc, 0xc6, 0x4d, 0x28,
-	0x7f, 0x76, 0x17, 0xde, 0x78, 0x76, 0xd5, 0xac, 0x88, 0x0c, 0xd1, 0x16, 0xff, 0x0d, 0x4a, 0x9f,
-	0x5c, 0x67, 0xe2, 0x7f, 0x6a, 0x56, 0x45, 0xfc, 0x97, 0x77, 0xc7, 0xef, 0x0a, 0x5b, 0x1a, 0xfa,
-	0xe0, 0x37, 0x80, 0x9d, 0xa1, 0x3f, 0x5e, 0x0b, 0x81, 0xd8, 0xf2, 0x7f, 0xe3, 0xf9, 0xdc, 0x1d,
-	0x35, 0x41, 0xa4, 0xd8, 0x4d, 0x4e, 0xac, 0xe0, 0x40, 0xfe, 0x21, 0x07, 0x05, 0xc1, 0x07, 0x43,
-	0xbd, 0xa7, 0xe8, 0x27, 0x26, 0xed, 0x11, 0x95, 0xd9, 0x17, 0x7d, 0x82, 0x32, 0x78, 0x07, 0x2a,
-	0x3d, 0x8d, 0x52, 0x93, 0x12, 0x15, 0x65, 0xf1, 0x53, 0xd8, 0x8f, 0x76, 0xec, 0x5c, 0xb3, 0xbb,
-	0xe6, 0x99, 0xcd, 0xac, 0x0b, 0xa3, 0x8d, 0x72, 0x18, 0xa0, 0x64, 0x52, 0xad, 0xa3, 0x19, 0x28,
-	0x8f, 0x0f, 0xe1, 0x77, 0xc1, 0x5a, 0x18, 0xb1, 0x1e, 0xa1, 0x1d, 0xcd, 0xe8, 0x30, 0xcb, 0x50,
-	0xfa, 0x56, 0xd7, 0xb4, 0x51, 0x01, 0x57, 0xa0, 0x40, 0x15, 0x4d, 0x45, 0x45, 0xbc, 0x0f, 0xbb,
-	0x7c, 0xb5, 0x19, 0xae, 0xc4, 0xf3, 0xc6, 0xe6, 0x65, 0xbc, 0x07, 0xe8, 0x46, 0x90, 0x0a, 0x96,
-	0xa0, 0xdc, 0x1f, 0xb0, 0x9e, 0x39, 0x20, 0xa8, 0xca, 0xc9, 0x0f, 0x34, 0x6a, 0x9f, 0x29, 0x3a,
-	0x0b, 0x28, 0x22, 0xc0, 0x8f, 0x01, 0x47, 0x98, 0xc8, 0xa1, 0xf5, 0x94, 0x0e, 0x41, 0x12, 0x3e,
-	0x80, 0xc7, 0xc9, 0x9e, 0xf1, 0xac, 0xe6, 0x49, 0x90, 0x78, 0x07, 0xd7, 0x01, 0x02, 0x7f, 0xa6,
-	0x9b, 0x1d, 0x54, 0xe3, 0xa9, 0xcf, 0x0c, 0x95, 0x50, 0xd6, 0x36, 0x8d, 0x01, 0xa1, 0x96, 0x66,
-	0x1a, 0xa8, 0xce, 0xf9, 0xdb, 0x5d, 0xcd, 0x40, 0x0d, 0x5c, 0x83, 0x2a, 0x5f, 0xb1, 0xbe, 0x69,
-	0xea, 0x08, 0x71, 0x1a, 0xf1, 0x96, 0xa9, 0x8a, 0xad, 0xa0, 0x5d, 0xfc, 0x07, 0x38, 0x10, 0xe9,
-	0x4c, 0xca, 0x92, 0xb3, 0x1e, 0xb1, 0x15, 0x71, 0x8e, 0xe5, 0xff, 0x80, 0x94, 0x1a, 0x14, 0x21,
-	0x72, 0x5c, 0x86, 0x3e, 0xa1, 0x3d, 0xcd, 0xe2, 0x59, 0x2d, 0x94, 0xe1, 0xc9, 0xce, 0xa9, 0x66,
-	0x13, 0xe5, 0x9f, 0x3a, 0x41, 0x59, 0xbe, 0xa5, 0x44, 0x51, 0x99, 0x69, 0xe8, 0x17, 0x28, 0x87,
-	0x9b, 0xb0, 0x17, 0x6f, 0x99, 0xd2, 0xb6, 0xb5, 0x81, 0x62, 0x73, 0xba, 0x79, 0xf9, 0xdb, 0x2c,
-	0x40, 0x32, 0x3f, 0xdc, 0x30, 0xc9, 0xa0, 0xe8, 0xba, 0xd9, 0x0e, 0x0c, 0x45, 0xb9, 0x15, 0xe3,
-	0xe2, 0xbc, 0x4b, 0x28, 0x8f, 0x5f, 0x07, 0x68, 0x9b, 0x86, 0xad, 0x75, 0xce, 0xcc, 0x33, 0x0b,
-	0xe5, 0x78, 0x3e, 0xcd, 0xe8, 0x12, 0xce, 0x40, 0x45, 0x79, 0x5c, 0x85, 0x62, 0x5b, 0xd7, 0x8c,
-	0x0e, 0x2a, 0xf0, 0xea, 0x1b, 0x26, 0xed, 0x29, 0x3a, 0x2a, 0xe2, 0x47, 0xd0, 0x88, 0x62, 0x30,
-	0xdd, 0x6c, 0x9f, 0x12, 0x15, 0x95, 0x78, 0x99, 0x93, 0x50, 0x11, 0x2c, 0x0a, 0x1b, 0x47, 0x8c,
-	0xd0, 0x0a, 0x46, 0xb0, 0x23, 0x02, 0x47, 0x48, 0x15, 0xef, 0x42, 0x2d, 0x88, 0x1f, 0x41, 0x20,
-	0x7f, 0x99, 0x83, 0xa2, 0x98, 0x56, 0x9e, 0x30, 0xb9, 0x8e, 0x65, 0x2b, 0x36, 0x6f, 0x5c, 0x80,
-	0x92, 0x90, 0x20, 0xd4, 0xc9, 0x3a, 0xb3, 0xfa, 0xc4, 0x50, 0x89, 0x8a, 0x72, 0x41, 0xd2, 0x81,
-	0xa2, 0x6b, 0x6a, 0xd2, 0x4d, 0x79, 0x5e, 0xa5, 0x18, 0x8d, 0x8c, 0xd3, 0x2d, 0xfb, 0x14, 0xf6,
-	0xa3, 0x9d, 0xe8, 0x68, 0xc2, 0x4e, 0x14, 0x4d, 0x27, 0xbc, 0x87, 0x5f, 0xc0, 0xf3, 0x9b, 0x2e,
-	0x9b, 0x46, 0x25, 0x7c, 0x04, 0x2f, 0x7b, 0x4a, 0xbf, 0x4f, 0x54, 0xa6, 0x92, 0x81, 0xd6, 0x26,
-	0xac, 0x4f, 0x89, 0x45, 0x0c, 0x3b, 0xee, 0x7c, 0x9b, 0x57, 0xd5, 0x42, 0x65, 0xfc, 0x06, 0x5e,
-	0xff, 0xb4, 0x25, 0xd3, 0x8c, 0xe0, 0x5e, 0x81, 0x3d, 0xaa, 0xc8, 0x5f, 0x67, 0x01, 0x92, 0x17,
-	0x46, 0xcc, 0x4a, 0x32, 0xc5, 0x0a, 0xed, 0x10, 0x1b, 0x65, 0xb8, 0x80, 0x61, 0x5b, 0x87, 0x50,
-	0x16, 0x37, 0x40, 0x12, 0x6d, 0x19, 0x02, 0x39, 0xae, 0x63, 0x4c, 0x3e, 0x04, 0xf3, 0xdc, 0x4a,
-	0x34, 0x6d, 0x08, 0x14, 0x78, 0x87, 0x9f, 0x19, 0xa7, 0x86, 0x79, 0x1e, 0x63, 0xc5, 0xf4, 0xf0,
-	0x85, 0x58, 0x49, 0x9e, 0x41, 0x29, 0x78, 0x97, 0x36, 0x19, 0x75, 0x89, 0xa2, 0xdb, 0x5d, 0x94,
-	0xc1, 0x25, 0xc8, 0x99, 0xa7, 0x28, 0x2b, 0xa6, 0x58, 0xa1, 0xb6, 0xa6, 0xe8, 0x28, 0xc7, 0x03,
-	0x51, 0x72, 0x42, 0x89, 0xd5, 0x65, 0x06, 0x21, 0xaa, 0x68, 0x33, 0xee, 0xae, 0x59, 0x3d, 0xc5,
-	0x6e, 0x77, 0x89, 0xc5, 0xc8, 0xbf, 0x34, 0x8b, 0xd3, 0x68, 0x80, 0x24, 0x46, 0xa1, 0x67, 0x5a,
-	0xb6, 0x7e, 0x81, 0x8a, 0xf2, 0x67, 0x90, 0x82, 0x97, 0xb1, 0xb3, 0xf0, 0x56, 0xf3, 0x7b, 0x7f,
-	0x15, 0x3c, 0x83, 0xea, 0xc7, 0x85, 0xeb, 0x32, 0x71, 0x90, 0x17, 0x07, 0x15, 0x0e, 0x58, 0xe9,
-	0x4f, 0x86, 0x42, 0xea, 0x93, 0x21, 0xfa, 0x89, 0x2d, 0x26, 0x3f, 0xb1, 0x72, 0x0b, 0x6a, 0xfa,
-	0x78, 0xe9, 0xeb, 0x03, 0xea, 0xfe, 0x7f, 0xe5, 0x2e, 0x7d, 0xfe, 0x61, 0xb0, 0x16, 0x64, 0xd8,
-	0x15, 0x67, 0x13, 0xb2, 0x90, 0xd6, 0x09, 0x41, 0xf9, 0xaf, 0x20, 0x45, 0x3e, 0xf3, 0xc9, 0x35,
-	0xfe, 0x33, 0x94, 0x83, 0xd3, 0x65, 0x33, 0x7b, 0x98, 0x3f, 0x92, 0x5a, 0xf8, 0xe6, 0x9b, 0x4f,
-	0x23, 0x13, 0xf9, 0xab, 0x2c, 0x34, 0xda, 0x0b, 0xd7, 0xf1, 0xdd, 0x87, 0xe4, 0x8c, 0x45, 0xc9,
-	0xdd, 0x22, 0x4a, 0x3e, 0x25, 0x4a, 0x13, 0xca, 0xd3, 0xf1, 0x62, 0xe1, 0x2d, 0x82, 0x6f, 0xa2,
-	0x1a, 0x8d, 0xb6, 0xb7, 0xde, 0xfe, 0x3d, 0xd4, 0x12, 0x2e, 0xfc, 0x2e, 0xaf, 0xa0, 0x3e, 0xf4,
-	0xa6, 0x53, 0x67, 0x36, 0x62, 0xde, 0xca, 0x9f, 0xaf, 0xfc, 0x90, 0x4b, 0x2d, 0x44, 0x4d, 0x01,
-	0xca, 0x5d, 0x68, 0x50, 0x77, 0xea, 0xad, 0x7f, 0xf1, 0x1d, 0x38, 0x83, 0x24, 0xd2, 0x03, 0x18,
-	0x18, 0x50, 0x6f, 0x4f, 0xbc, 0x59, 0x8a, 0xc0, 0x73, 0x90, 0x96, 0xde, 0x6a, 0x31, 0x74, 0x59,
-	0xaa, 0x7b, 0x20, 0x80, 0x0c, 0x2e, 0xd7, 0x33, 0xa8, 0x8e, 0xdc, 0xa5, 0xcf, 0x52, 0x1c, 0x2a,
-	0x1c, 0xe0, 0x87, 0xf2, 0x3b, 0xd8, 0x89, 0xe3, 0x3d, 0x80, 0x46, 0x23, 0x68, 0x9f, 0x41, 0x27,
-	0x64, 0x21, 0xab, 0x41, 0x6f, 0x70, 0x80, 0x87, 0x79, 0x07, 0xb5, 0xb4, 0x2a, 0x51, 0x87, 0x20,
-	0xd1, 0x21, 0xa9, 0xa6, 0xa7, 0x3b, 0x29, 0xa1, 0x96, 0xf2, 0x65, 0xd4, 0x23, 0x71, 0xe0, 0x5b,
-	0xa7, 0xe2, 0x4f, 0xd0, 0x98, 0x7f, 0xba, 0x5e, 0xf2, 0x36, 0x63, 0x81, 0x7f, 0x78, 0xaf, 0x7a,
-	0x04, 0x27, 0x1f, 0xda, 0xa2, 0xf6, 0xf9, 0xdb, 0x6a, 0x1f, 0x71, 0xbd, 0xe7, 0x95, 0x5f, 0x45,
-	0xb5, 0xbf, 0x93, 0x5b, 0x52, 0xd8, 0x07, 0x86, 0xff, 0x37, 0x34, 0x94, 0xd1, 0xc8, 0x76, 0xae,
-	0x7e, 0x8d, 0xf1, 0xb8, 0xed, 0xd2, 0x49, 0xf4, 0x07, 0xb0, 0x62, 0x80, 0x83, 0xdb, 0xfc, 0x56,
-	0xc4, 0x3e, 0x00, 0xda, 0x48, 0x70, 0x7f, 0x6e, 0xad, 0xef, 0xf3, 0x90, 0xd7, 0x07, 0x3d, 0xfc,
-	0x17, 0x28, 0x05, 0xcf, 0x12, 0x0e, 0x1f, 0xa0, 0xf4, 0xbb, 0x76, 0x80, 0x36, 0xb0, 0xf9, 0xe4,
-	0x5a, 0xce, 0xe0, 0xf7, 0x50, 0x89, 0xc6, 0x1f, 0xef, 0x89, 0xf3, 0xad, 0x97, 0xe9, 0x00, 0x6f,
-	0xa1, 0xb1, 0x5f, 0x34, 0xb4, 0xa1, 0xdf, 0xd6, 0x6b, 0x10, 0xfa, 0x6d, 0x4c, 0xb6, 0x9c, 0xc1,
-	0x6f, 0xa1, 0x1c, 0x0e, 0x19, 0x7e, 0x14, 0x04, 0xde, 0x18, 0xe1, 0x83, 0xdd, 0x4d, 0x30, 0x4e,
-	0x16, 0x95, 0x2c, 0x4c, 0xb6, 0xd5, 0x1f, 0x61, 0xb2, 0x8d, 0xba, 0xca, 0x19, 0xfc, 0x0f, 0x90,
-	0x52, 0x8a, 0xe2, 0x27, 0x29, 0x46, 0x1b, 0xde, 0xfb, 0x37, 0x0f, 0x82, 0x00, 0xa1, 0x9e, 0x83,
-	0x4e, 0x4a, 0xcf, 0xb8, 0xe7, 0x53, 0x7a, 0x86, 0x0d, 0x9e, 0xd6, 0x73, 0xd0, 0xd9, 0xd0, 0x33,
-	0xf1, 0xc2, 0x5b, 0xe8, 0x96, 0x9e, 0x3f, 0xe3, 0xb7, 0x31, 0x50, 0x72, 0xe6, 0xb2, 0x24, 0xfe,
-	0x5d, 0xbf, 0xfd, 0x31, 0x00, 0x00, 0xff, 0xff, 0x9b, 0x96, 0x43, 0x9b, 0x6a, 0x0f, 0x00, 0x00,
+	// 1860 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0x5b, 0x6f, 0xe3, 0xc6,
+	0x15, 0xb6, 0xee, 0xf2, 0x91, 0x25, 0x8d, 0x27, 0xde, 0x44, 0x71, 0xda, 0xae, 0xcb, 0x6c, 0x1a,
+	0x07, 0xed, 0x2e, 0x0a, 0x6f, 0x77, 0x81, 0xa0, 0x2d, 0x0a, 0x56, 0xe4, 0x4a, 0xc4, 0x52, 0x24,
+	0x31, 0xa4, 0xb5, 0x35, 0x50, 0x60, 0x4a, 0x4b, 0xb4, 0x57, 0x8d, 0x24, 0xaa, 0x12, 0x25, 0xc4,
+	0xfb, 0xd8, 0x87, 0x3e, 0xf4, 0xb9, 0xed, 0xff, 0xea, 0x7f, 0xe8, 0xef, 0x28, 0x8a, 0xb9, 0xf0,
+	0x26, 0x3b, 0xea, 0x0a, 0xc9, 0xbe, 0x71, 0xbe, 0x39, 0x97, 0x6f, 0xce, 0x65, 0xce, 0x48, 0x70,
+	0x38, 0xdd, 0xcc, 0x9e, 0x2d, 0x96, 0x61, 0x14, 0xe2, 0xd2, 0x74, 0x33, 0x53, 0xfe, 0x85, 0xa0,
+	0x69, 0x86, 0xb7, 0x93, 0x91, 0x3f, 0x1d, 0x86, 0xd3, 0xf5, 0x2c, 0xc0, 0x18, 0xca, 0x73, 0x7f,
+	0x16, 0x74, 0x0a, 0x67, 0x85, 0xf3, 0x43, 0xc2, 0xbf, 0x19, 0xb6, 0x9a, 0xbc, 0x0b, 0x3a, 0xc5,
+	0xb3, 0xc2, 0x79, 0x99, 0xf0, 0x6f, 0x86, 0xad, 0xd7, 0x93, 0x71, 0xa7, 0x24, 0xe4, 0xd8, 0x37,
+	0xfe, 0x2d, 0x80, 0x1f, 0x45, 0xcb, 0xc9, 0xf5, 0x3a, 0x0a, 0x56, 0x9d, 0xf2, 0x59, 0xe1, 0xbc,
+	0x71, 0xf1, 0xe3, 0x67, 0xcc, 0x65, 0xce, 0xc7, 0x33, 0x35, 0x11, 0x22, 0x19, 0x05, 0xfc, 0x53,
+	0x38, 0x1a, 0x85, 0x8b, 0x3b, 0xba, 0x08, 0x96, 0xa3, 0x60, 0x1e, 0x75, 0x2a, 0xdc, 0x74, 0x83,
+	0x61, 0x8e, 0x80, 0xf0, 0x0b, 0xf8, 0xc4, 0x1f, 0x45, 0x6b, 0x7f, 0x4a, 0xc7, 0xc1, 0x86, 0xce,
+	0xfc, 0x3f, 0x87, 0x4b, 0x3a, 0x5f, 0xcf, 0xae, 0x83, 0x65, 0xa7, 0x7a, 0x56, 0x38, 0x6f, 0x92,
+	0x13, 0xb1, 0xad, 0x05, 0x9b, 0x01, 0xdb, 0xb4, 0xf8, 0xde, 0xb6, 0xda, 0x64, 0x9e, 0xaa, 0xd5,
+	0xb6, 0xd5, 0xd8, 0xa6, 0x54, 0xc3, 0x50, 0x8e, 0xfc, 0xdb, 0x55, 0xa7, 0x7e, 0x56, 0x62, 0x67,
+	0x64, 0xdf, 0xa7, 0xff, 0x69, 0x02, 0xa4, 0xfc, 0xf1, 0x4b, 0x28, 0x47, 0x77, 0x0b, 0x11, 0xae,
+	0xd6, 0x85, 0xb2, 0xf3, 0xb0, 0xcf, 0xbc, 0xbb, 0x45, 0x40, 0xb8, 0x3c, 0x7e, 0x0d, 0x8d, 0x45,
+	0xb0, 0x9c, 0x4d, 0x56, 0xab, 0x49, 0x38, 0x5f, 0xf1, 0xc8, 0xb6, 0x2e, 0xbe, 0xda, 0xad, 0xee,
+	0xa4, 0x0a, 0x24, 0xab, 0x8d, 0xfb, 0x00, 0xfe, 0x74, 0x1a, 0x8e, 0xfc, 0x68, 0x12, 0xce, 0x79,
+	0x46, 0x5a, 0x17, 0xe7, 0xbb, 0x6d, 0xa9, 0x89, 0x3c, 0xc9, 0xe8, 0xe2, 0xc7, 0xd0, 0xb8, 0x99,
+	0x7c, 0x1b, 0x8c, 0x45, 0x8c, 0x78, 0x0a, 0xeb, 0x04, 0x38, 0xc4, 0x03, 0x83, 0xbf, 0x86, 0xca,
+	0x2a, 0xf2, 0xa3, 0x80, 0x27, 0xa7, 0x75, 0xf1, 0xf9, 0x6e, 0x2f, 0x2e, 0x13, 0x25, 0x42, 0x83,
+	0x45, 0x33, 0x5c, 0x04, 0x73, 0x9e, 0xa8, 0x3a, 0xe1, 0xdf, 0xd8, 0x80, 0x46, 0xe4, 0x2f, 0x6f,
+	0x83, 0x88, 0xf2, 0x28, 0xd6, 0xde, 0x87, 0xba, 0xc7, 0x15, 0x78, 0x2c, 0x21, 0x4a, 0xbe, 0x71,
+	0x07, 0x6a, 0xef, 0x82, 0x65, 0x38, 0x99, 0xdf, 0x76, 0xea, 0xdc, 0x43, 0xbc, 0xc4, 0xbf, 0x81,
+	0xea, 0xdb, 0xc0, 0x9f, 0x46, 0x6f, 0x3b, 0x87, 0xdc, 0xfe, 0x93, 0xdd, 0xf6, 0xfb, 0x5c, 0x96,
+	0x48, 0x1d, 0xfc, 0x14, 0xb0, 0x3f, 0x8a, 0x26, 0x1b, 0x1e, 0x20, 0xba, 0xfa, 0x66, 0xb2, 0x58,
+	0x04, 0xe3, 0x0e, 0x70, 0x17, 0xc7, 0xe9, 0x8e, 0x2b, 0x36, 0x94, 0xff, 0x16, 0xa1, 0xcc, 0xf9,
+	0x60, 0x68, 0x0d, 0x54, 0xf3, 0x95, 0x4d, 0x06, 0xba, 0x46, 0xbd, 0x2b, 0x47, 0x47, 0x07, 0xf8,
+	0x08, 0xea, 0x03, 0x83, 0x10, 0x9b, 0xe8, 0x1a, 0x2a, 0xe0, 0x4f, 0xe1, 0x51, 0xbc, 0xa2, 0x6f,
+	0x0c, 0xaf, 0x6f, 0x5f, 0x7a, 0xd4, 0xbd, 0xb2, 0xba, 0xa8, 0x88, 0x01, 0xaa, 0x36, 0x31, 0x7a,
+	0x86, 0x85, 0x4a, 0xf8, 0x0c, 0x7e, 0x24, 0xbe, 0xb9, 0x10, 0x1d, 0xe8, 0xa4, 0x67, 0x58, 0x3d,
+	0xea, 0x5a, 0xaa, 0xe3, 0xf6, 0x6d, 0x0f, 0x95, 0x71, 0x1d, 0xca, 0x44, 0x35, 0x34, 0x54, 0xc1,
+	0x8f, 0xe0, 0x98, 0x7d, 0xe5, 0xcd, 0x55, 0x99, 0xdf, 0x44, 0xbc, 0x86, 0x4f, 0x00, 0xdd, 0x33,
+	0x52, 0xc7, 0x0d, 0xa8, 0x39, 0x43, 0x3a, 0xb0, 0x87, 0x3a, 0x3a, 0x64, 0xe4, 0x87, 0x06, 0xf1,
+	0x2e, 0x55, 0x93, 0x0a, 0x8a, 0x08, 0xf0, 0xc7, 0x80, 0x63, 0x8c, 0xfb, 0x30, 0x06, 0x6a, 0x4f,
+	0x47, 0x0d, 0x7c, 0x0a, 0x1f, 0xa7, 0x6b, 0xca, 0xbc, 0xda, 0xaf, 0x84, 0xe3, 0x23, 0xdc, 0x02,
+	0x10, 0xfa, 0xd4, 0xb4, 0x7b, 0xa8, 0xc9, 0x5c, 0x5f, 0x5a, 0x9a, 0x4e, 0x68, 0xd7, 0xb6, 0x86,
+	0x3a, 0x71, 0x0d, 0xdb, 0x42, 0x2d, 0xc6, 0xdf, 0xeb, 0x1b, 0x16, 0x6a, 0xe3, 0x26, 0x1c, 0xb2,
+	0x2f, 0xea, 0xd8, 0xb6, 0x89, 0x10, 0xa3, 0x91, 0x2c, 0xa9, 0xa6, 0x7a, 0x2a, 0x3a, 0xc6, 0x3f,
+	0x81, 0x53, 0xee, 0xce, 0x26, 0x34, 0xdd, 0x1b, 0xe8, 0x9e, 0xca, 0xf7, 0xb1, 0xf2, 0x27, 0x68,
+	0x64, 0x1a, 0x85, 0x07, 0x39, 0x49, 0x83, 0xa3, 0x93, 0x81, 0xe1, 0x32, 0xaf, 0x2e, 0x3a, 0x60,
+	0xce, 0xde, 0x10, 0xc3, 0xd3, 0xd5, 0xdf, 0x9b, 0x3a, 0x2a, 0xb0, 0x25, 0xd1, 0x55, 0x8d, 0xda,
+	0x96, 0x79, 0x85, 0x8a, 0xb8, 0x03, 0x27, 0xc9, 0x92, 0xaa, 0x5d, 0xcf, 0x18, 0xaa, 0x1e, 0xa3,
+	0x5b, 0x52, 0xfe, 0x5d, 0x00, 0x48, 0xfb, 0x87, 0x09, 0xa6, 0x1e, 0x54, 0xd3, 0xb4, 0xbb, 0x42,
+	0x90, 0xa7, 0x5b, 0xb5, 0xae, 0xde, 0xf4, 0x75, 0xc2, 0xec, 0xb7, 0x00, 0xba, 0xb6, 0xe5, 0x19,
+	0xbd, 0x4b, 0xfb, 0xd2, 0x45, 0x45, 0xe6, 0xcf, 0xb0, 0xfa, 0x3a, 0x63, 0xa0, 0xa1, 0x12, 0x3e,
+	0x84, 0x4a, 0xd7, 0x34, 0xac, 0x1e, 0x2a, 0xb3, 0xec, 0x5b, 0x36, 0x19, 0xa8, 0x26, 0xaa, 0xe0,
+	0x8f, 0xa0, 0x1d, 0xdb, 0xa0, 0xa6, 0xdd, 0x7d, 0xad, 0x6b, 0xa8, 0xca, 0xd2, 0x9c, 0x9a, 0x8a,
+	0x61, 0x9e, 0xd8, 0xc4, 0x62, 0x8c, 0xd6, 0x31, 0x82, 0x23, 0x6e, 0x38, 0x46, 0x0e, 0xf1, 0x31,
+	0x34, 0x85, 0xfd, 0x18, 0x02, 0xe5, 0x6f, 0x45, 0xa8, 0xf0, 0x6e, 0x65, 0x0e, 0xd3, 0xe3, 0xb8,
+	0x9e, 0xea, 0xb1, 0xc2, 0x05, 0xa8, 0xf2, 0x10, 0xc8, 0x38, 0xb9, 0x97, 0xae, 0xa3, 0x5b, 0x9a,
+	0xae, 0xa1, 0xa2, 0x70, 0x3a, 0x54, 0x4d, 0x43, 0x4b, 0xab, 0xa9, 0xc4, 0xb2, 0x94, 0xa0, 0xb1,
+	0x70, 0xb6, 0x64, 0x3f, 0x85, 0x47, 0xf1, 0x8a, 0x57, 0xb4, 0x4e, 0x5f, 0xa9, 0x86, 0xa9, 0xb3,
+	0x1a, 0xfe, 0x1c, 0x1e, 0xdf, 0x57, 0xc9, 0x0b, 0x55, 0xf1, 0x39, 0x3c, 0x19, 0xa8, 0x8e, 0xa3,
+	0x6b, 0x54, 0xd3, 0x87, 0x46, 0x57, 0xa7, 0x0e, 0xd1, 0x5d, 0xdd, 0xf2, 0x92, 0xca, 0xf7, 0x58,
+	0x56, 0x5d, 0x54, 0xc3, 0x4f, 0xe1, 0xab, 0xef, 0x96, 0xa4, 0x86, 0x25, 0xce, 0x25, 0xe4, 0x51,
+	0x5d, 0xf9, 0x47, 0x01, 0x20, 0xbd, 0x61, 0x78, 0xaf, 0xa4, 0x5d, 0xac, 0x92, 0x9e, 0xee, 0xa1,
+	0x03, 0x16, 0x40, 0x59, 0xd6, 0x12, 0x2a, 0xe0, 0x36, 0x34, 0x78, 0x59, 0x4a, 0xa0, 0xc8, 0xe2,
+	0x98, 0x90, 0x97, 0x60, 0x89, 0x49, 0xf1, 0xa2, 0x95, 0x40, 0x99, 0x55, 0xf8, 0xa5, 0xf5, 0xda,
+	0xb2, 0xdf, 0x24, 0x58, 0x25, 0xdb, 0x7c, 0x12, 0xab, 0x2a, 0x73, 0xa8, 0x8a, 0x7b, 0x29, 0xcf,
+	0xa8, 0xaf, 0xab, 0xa6, 0xd7, 0x47, 0x07, 0xb8, 0x0a, 0x45, 0xfb, 0x35, 0x2a, 0xf0, 0x2e, 0x56,
+	0x89, 0x67, 0xa8, 0x26, 0x2a, 0x32, 0x43, 0x44, 0x7f, 0x45, 0x74, 0xb7, 0x4f, 0x2d, 0x5d, 0xd7,
+	0x78, 0x99, 0x31, 0x75, 0xc3, 0x1d, 0xa8, 0x5e, 0xb7, 0xaf, 0xbb, 0x54, 0xff, 0x83, 0xe1, 0x32,
+	0x1a, 0x6d, 0x68, 0xf0, 0x56, 0x18, 0xd8, 0xae, 0x67, 0x5e, 0xa1, 0x8a, 0xf2, 0x0e, 0x1a, 0xe2,
+	0x66, 0xec, 0x2d, 0xc3, 0xf5, 0xe2, 0xbd, 0x5f, 0x05, 0x9f, 0xc1, 0xe1, 0xcd, 0x32, 0x08, 0x28,
+	0xdf, 0x28, 0xf1, 0x8d, 0x3a, 0x03, 0xdc, 0xec, 0x93, 0xa1, 0x9c, 0x79, 0x32, 0xc4, 0x23, 0xb6,
+	0x92, 0x8e, 0x58, 0xe5, 0x02, 0x9a, 0xe6, 0x64, 0x15, 0x99, 0x43, 0x12, 0xfc, 0x65, 0x1d, 0xac,
+	0x22, 0xf6, 0x30, 0xd8, 0x70, 0x32, 0xf4, 0x96, 0xb1, 0x91, 0x2c, 0x1a, 0x9b, 0x94, 0xa0, 0xf2,
+	0x6b, 0x68, 0xc4, 0x3a, 0x8b, 0xe9, 0x1d, 0xfe, 0x05, 0xd4, 0xc4, 0xee, 0xaa, 0x53, 0x38, 0x2b,
+	0x9d, 0x37, 0x2e, 0xf0, 0xfd, 0x3b, 0x9f, 0xc4, 0x22, 0xca, 0xdf, 0x0b, 0xd0, 0xee, 0x2e, 0x03,
+	0x3f, 0x0a, 0xf6, 0xf1, 0x99, 0x04, 0xa5, 0xf8, 0x40, 0x50, 0x4a, 0x99, 0xa0, 0x74, 0xa0, 0x36,
+	0x9b, 0x2c, 0x97, 0xe1, 0x52, 0xbc, 0x89, 0x9a, 0x24, 0x5e, 0x3e, 0x78, 0xfa, 0x97, 0xd0, 0x4c,
+	0xb9, 0xb0, 0xb3, 0x7c, 0x01, 0xad, 0x51, 0x38, 0x9b, 0xf9, 0xf3, 0x31, 0x0d, 0xd7, 0xd1, 0x62,
+	0x1d, 0x49, 0x2e, 0x4d, 0x89, 0xda, 0x1c, 0x54, 0xfa, 0xd0, 0x26, 0xc1, 0x2c, 0xdc, 0x7c, 0xef,
+	0x33, 0x30, 0x06, 0xa9, 0xa5, 0x3d, 0x18, 0x58, 0xd0, 0xea, 0x4e, 0xc3, 0x79, 0x86, 0xc0, 0x63,
+	0x68, 0xac, 0xc2, 0xf5, 0x72, 0x14, 0xd0, 0x4c, 0xf5, 0x80, 0x80, 0x2c, 0x16, 0xae, 0xcf, 0xe0,
+	0x70, 0x1c, 0xac, 0x22, 0x9a, 0xe1, 0x50, 0x67, 0x00, 0xdb, 0x54, 0x5e, 0xc0, 0x51, 0x62, 0x6f,
+	0x0f, 0x1a, 0x7f, 0x64, 0x81, 0x60, 0x81, 0xff, 0x10, 0xc9, 0x14, 0xc1, 0x89, 0xad, 0xef, 0xc1,
+	0xaa, 0x2d, 0x8a, 0x7a, 0xd8, 0x93, 0x9c, 0x14, 0x4d, 0x54, 0x2c, 0x03, 0x98, 0x99, 0x17, 0xd0,
+	0xcc, 0x52, 0x8c, 0xeb, 0x16, 0xf1, 0xba, 0xcd, 0xb4, 0x22, 0x39, 0xca, 0xb0, 0x5e, 0x29, 0xd7,
+	0x71, 0xe5, 0x26, 0x86, 0x1f, 0xec, 0xd5, 0x2f, 0xa1, 0xbd, 0x78, 0x7b, 0xb7, 0x62, 0xc5, 0x4f,
+	0x85, 0xbe, 0x3c, 0x68, 0x2b, 0x86, 0xd3, 0xe7, 0x3f, 0xaf, 0xc8, 0xd2, 0x43, 0x15, 0x19, 0x73,
+	0x7d, 0xcf, 0x23, 0x7f, 0x11, 0x57, 0xe4, 0x4e, 0x6e, 0x69, 0xb9, 0xed, 0x69, 0xde, 0x82, 0xb6,
+	0xfe, 0x6d, 0x14, 0xcc, 0xc7, 0x3f, 0xcc, 0xd1, 0x19, 0x8f, 0xd4, 0xde, 0x7e, 0xf5, 0xa6, 0x8e,
+	0xc7, 0x9e, 0x7f, 0xfb, 0x43, 0xd4, 0xdb, 0x43, 0xc1, 0x4f, 0xad, 0xef, 0xc1, 0x8a, 0x02, 0x16,
+	0x51, 0xfd, 0x50, 0xc4, 0xbe, 0x06, 0x94, 0x73, 0xb0, 0x07, 0xb7, 0x2f, 0xe3, 0xa2, 0x75, 0x12,
+	0x62, 0x27, 0x50, 0xb9, 0x9e, 0x86, 0xa3, 0x6f, 0xa4, 0x82, 0x58, 0xa4, 0x95, 0xe7, 0xec, 0xed,
+	0x40, 0x70, 0x7b, 0x0f, 0x07, 0xa9, 0xe0, 0xfe, 0xdd, 0x9c, 0x98, 0x57, 0x7e, 0x25, 0xba, 0x39,
+	0x35, 0x53, 0x5b, 0x6c, 0x26, 0xf3, 0x9b, 0x30, 0xee, 0xe3, 0x06, 0xef, 0x63, 0x67, 0x68, 0xcc,
+	0x6f, 0x42, 0x12, 0xef, 0x29, 0x7f, 0x2d, 0x40, 0x55, 0x60, 0xdf, 0x35, 0x61, 0xf9, 0xc0, 0x2c,
+	0x66, 0x06, 0x26, 0x82, 0xd2, 0xcd, 0x2c, 0x92, 0x3f, 0xbb, 0xd9, 0x67, 0x72, 0x4b, 0x95, 0x33,
+	0x23, 0xe7, 0x04, 0x2a, 0x6b, 0x0e, 0x56, 0x38, 0x28, 0x16, 0x0c, 0xbd, 0xe1, 0x68, 0x55, 0xa0,
+	0x7c, 0xc1, 0x82, 0x35, 0xf4, 0xa7, 0x93, 0x31, 0xfb, 0xa9, 0xb6, 0x33, 0x58, 0x3f, 0x87, 0x66,
+	0x2a, 0xc8, 0x4e, 0x79, 0x0a, 0xf5, 0x8d, 0x04, 0xb8, 0x64, 0x9d, 0x24, 0x6b, 0xe5, 0x67, 0xd0,
+	0xd2, 0x82, 0x55, 0x14, 0x2e, 0xef, 0x76, 0x1b, 0x7d, 0x01, 0x47, 0x89, 0xdc, 0x1e, 0x09, 0x78,
+	0x02, 0x47, 0x03, 0x3f, 0x1a, 0xbd, 0xdd, 0x6d, 0xfc, 0x39, 0x80, 0x94, 0xda, 0xc3, 0xf4, 0x4b,
+	0x68, 0xf6, 0x82, 0xc8, 0x19, 0x5a, 0xeb, 0xd9, 0x3e, 0x7a, 0x17, 0xff, 0xac, 0x43, 0xc9, 0x1c,
+	0x0e, 0xf0, 0x2f, 0xa1, 0x2a, 0x9e, 0x22, 0x58, 0x3e, 0x3a, 0xb2, 0x6f, 0x99, 0x53, 0x94, 0xc3,
+	0x16, 0xd3, 0x3b, 0xe5, 0x00, 0xbf, 0x84, 0x7a, 0x3c, 0xf2, 0xf1, 0x09, 0xdf, 0xdf, 0x7a, 0x8d,
+	0x9c, 0xe2, 0x2d, 0x34, 0xd1, 0x8b, 0x07, 0xb5, 0xd4, 0xdb, 0x7a, 0x01, 0x48, 0xbd, 0xdc, 0x34,
+	0x57, 0x0e, 0xf0, 0x73, 0xa8, 0xc9, 0xc1, 0x8a, 0x3f, 0x12, 0x86, 0x73, 0x63, 0xfb, 0xf4, 0x38,
+	0x0f, 0x66, 0x9c, 0x89, 0xc1, 0x97, 0x38, 0xcb, 0x4d, 0xd9, 0xc4, 0x59, 0x66, 0x3a, 0x0a, 0xbd,
+	0xf8, 0x02, 0x93, 0x7a, 0x5b, 0xb7, 0xa5, 0xd4, 0xcb, 0xdd, 0x72, 0xca, 0x01, 0xfe, 0x1d, 0x34,
+	0x32, 0xf7, 0x0b, 0xfe, 0x24, 0x73, 0x92, 0x9c, 0xf6, 0xa3, 0xfb, 0x1b, 0xc2, 0x80, 0xcc, 0xc3,
+	0xb0, 0x97, 0xc9, 0x43, 0x32, 0x2a, 0x32, 0x79, 0x90, 0xd7, 0x7d, 0x36, 0x0f, 0xc3, 0x5e, 0x2e,
+	0x0f, 0xa9, 0x16, 0xde, 0x42, 0xb7, 0xf2, 0xf0, 0x7f, 0xf4, 0x72, 0x63, 0x2e, 0xeb, 0xcf, 0xc9,
+	0xe7, 0xdd, 0x79, 0x30, 0xef, 0xce, 0xfd, 0xbc, 0x3b, 0xf9, 0xbc, 0x3b, 0x0f, 0xe6, 0x3d, 0xa7,
+	0x17, 0x4f, 0x38, 0xa9, 0xb7, 0x35, 0x40, 0xa5, 0x5e, 0x6e, 0x0c, 0xc6, 0xfe, 0xc6, 0xeb, 0x51,
+	0xb0, 0xa7, 0x9e, 0xcc, 0x80, 0x93, 0xed, 0x04, 0xe7, 0x81, 0x4e, 0x48, 0x19, 0x3e, 0x85, 0x0a,
+	0x6f, 0x58, 0x2c, 0x4a, 0x30, 0xdb, 0xe2, 0xa7, 0xed, 0x2c, 0x94, 0x10, 0x8b, 0x5b, 0x75, 0x67,
+	0xe0, 0x73, 0xfd, 0x2c, 0xf4, 0xe2, 0x9b, 0x4c, 0xea, 0x6d, 0xdd, 0x80, 0x52, 0x2f, 0x77, 0xdd,
+	0x89, 0xc6, 0x91, 0x97, 0x95, 0x6c, 0x9c, 0xfc, 0x15, 0x27, 0x1b, 0x27, 0x7b, 0x9f, 0x29, 0x07,
+	0xd7, 0x55, 0xfe, 0x7f, 0xeb, 0xf3, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0xf8, 0x99, 0x34, 0x2a,
+	0x7c, 0x15, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1521,11 +2318,21 @@ type LVMClient interface {
 	CreateLV(ctx context.Context, in *CreateLVRequest, opts ...grpc.CallOption) (*CreateLVReply, error)
 	RemoveLV(ctx context.Context, in *RemoveLVRequest, opts ...grpc.CallOption) (*RemoveLVReply, error)
 	CloneLV(ctx context.Context, in *CloneLVRequest, opts ...grpc.CallOption) (*CloneLVReply, error)
+	ResizeLV(ctx context.Context, in *ResizeLVRequest, opts ...grpc.CallOption) (*ResizeLVReply, error)
 	AddTagLV(ctx context.Context, in *AddTagLVRequest, opts ...grpc.CallOption) (*AddTagLVReply, error)
 	RemoveTagLV(ctx context.Context, in *RemoveTagLVRequest, opts ...grpc.CallOption) (*RemoveTagLVReply, error)
 	ListVG(ctx context.Context, in *ListVGRequest, opts ...grpc.CallOption) (*ListVGReply, error)
 	CreateVG(ctx context.Context, in *CreateVGRequest, opts ...grpc.CallOption) (*CreateVGReply, error)
 	RemoveVG(ctx context.Context, in *CreateVGRequest, opts ...grpc.CallOption) (*RemoveVGReply, error)
+	CreatePV(ctx context.Context, in *CreatePVRequest, opts ...grpc.CallOption) (*CreatePVReply, error)
+	RemovePV(ctx context.Context, in *RemovePVRequest, opts ...grpc.CallOption) (*RemovePVReply, error)
+	ExtendVG(ctx context.Context, in *ExtendVGRequest, opts ...grpc.CallOption) (*ExtendVGReply, error)
+	ReduceVG(ctx context.Context, in *ExtendVGRequest, opts ...grpc.CallOption) (*ExtendVGReply, error)
+	ListPV(ctx context.Context, in *ListPVRequest, opts ...grpc.CallOption) (*ListPVReply, error)
+	Match(ctx context.Context, in *MatchRequest, opts ...grpc.CallOption) (*MatchReply, error)
+	GetPVNum(ctx context.Context, in *CreateVGRequest, opts ...grpc.CallOption) (*GetPVNumReply, error)
+	Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateReply, error)
+	Destory(ctx context.Context, in *DestoryRequest, opts ...grpc.CallOption) (*DestoryReply, error)
 }
 
 type lVMClient struct {
@@ -1566,6 +2373,15 @@ func (c *lVMClient) RemoveLV(ctx context.Context, in *RemoveLVRequest, opts ...g
 func (c *lVMClient) CloneLV(ctx context.Context, in *CloneLVRequest, opts ...grpc.CallOption) (*CloneLVReply, error) {
 	out := new(CloneLVReply)
 	err := c.cc.Invoke(ctx, "/lvm.LVM/CloneLV", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) ResizeLV(ctx context.Context, in *ResizeLVRequest, opts ...grpc.CallOption) (*ResizeLVReply, error) {
+	out := new(ResizeLVReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/ResizeLV", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1617,17 +2433,108 @@ func (c *lVMClient) RemoveVG(ctx context.Context, in *CreateVGRequest, opts ...g
 	return out, nil
 }
 
+func (c *lVMClient) CreatePV(ctx context.Context, in *CreatePVRequest, opts ...grpc.CallOption) (*CreatePVReply, error) {
+	out := new(CreatePVReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/CreatePV", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) RemovePV(ctx context.Context, in *RemovePVRequest, opts ...grpc.CallOption) (*RemovePVReply, error) {
+	out := new(RemovePVReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/RemovePV", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) ExtendVG(ctx context.Context, in *ExtendVGRequest, opts ...grpc.CallOption) (*ExtendVGReply, error) {
+	out := new(ExtendVGReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/ExtendVG", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) ReduceVG(ctx context.Context, in *ExtendVGRequest, opts ...grpc.CallOption) (*ExtendVGReply, error) {
+	out := new(ExtendVGReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/ReduceVG", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) ListPV(ctx context.Context, in *ListPVRequest, opts ...grpc.CallOption) (*ListPVReply, error) {
+	out := new(ListPVReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/ListPV", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) Match(ctx context.Context, in *MatchRequest, opts ...grpc.CallOption) (*MatchReply, error) {
+	out := new(MatchReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/Match", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) GetPVNum(ctx context.Context, in *CreateVGRequest, opts ...grpc.CallOption) (*GetPVNumReply, error) {
+	out := new(GetPVNumReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/GetPVNum", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateReply, error) {
+	out := new(ValidateReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/Validate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lVMClient) Destory(ctx context.Context, in *DestoryRequest, opts ...grpc.CallOption) (*DestoryReply, error) {
+	out := new(DestoryReply)
+	err := c.cc.Invoke(ctx, "/lvm.LVM/Destory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LVMServer is the server API for LVM service.
 type LVMServer interface {
 	ListLV(context.Context, *ListLVRequest) (*ListLVReply, error)
 	CreateLV(context.Context, *CreateLVRequest) (*CreateLVReply, error)
 	RemoveLV(context.Context, *RemoveLVRequest) (*RemoveLVReply, error)
 	CloneLV(context.Context, *CloneLVRequest) (*CloneLVReply, error)
+	ResizeLV(context.Context, *ResizeLVRequest) (*ResizeLVReply, error)
 	AddTagLV(context.Context, *AddTagLVRequest) (*AddTagLVReply, error)
 	RemoveTagLV(context.Context, *RemoveTagLVRequest) (*RemoveTagLVReply, error)
 	ListVG(context.Context, *ListVGRequest) (*ListVGReply, error)
 	CreateVG(context.Context, *CreateVGRequest) (*CreateVGReply, error)
 	RemoveVG(context.Context, *CreateVGRequest) (*RemoveVGReply, error)
+	CreatePV(context.Context, *CreatePVRequest) (*CreatePVReply, error)
+	RemovePV(context.Context, *RemovePVRequest) (*RemovePVReply, error)
+	ExtendVG(context.Context, *ExtendVGRequest) (*ExtendVGReply, error)
+	ReduceVG(context.Context, *ExtendVGRequest) (*ExtendVGReply, error)
+	ListPV(context.Context, *ListPVRequest) (*ListPVReply, error)
+	Match(context.Context, *MatchRequest) (*MatchReply, error)
+	GetPVNum(context.Context, *CreateVGRequest) (*GetPVNumReply, error)
+	Validate(context.Context, *ValidateRequest) (*ValidateReply, error)
+	Destory(context.Context, *DestoryRequest) (*DestoryReply, error)
 }
 
 // UnimplementedLVMServer can be embedded to have forward compatible implementations.
@@ -1646,6 +2553,9 @@ func (*UnimplementedLVMServer) RemoveLV(ctx context.Context, req *RemoveLVReques
 func (*UnimplementedLVMServer) CloneLV(ctx context.Context, req *CloneLVRequest) (*CloneLVReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloneLV not implemented")
 }
+func (*UnimplementedLVMServer) ResizeLV(ctx context.Context, req *ResizeLVRequest) (*ResizeLVReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResizeLV not implemented")
+}
 func (*UnimplementedLVMServer) AddTagLV(ctx context.Context, req *AddTagLVRequest) (*AddTagLVReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddTagLV not implemented")
 }
@@ -1660,6 +2570,33 @@ func (*UnimplementedLVMServer) CreateVG(ctx context.Context, req *CreateVGReques
 }
 func (*UnimplementedLVMServer) RemoveVG(ctx context.Context, req *CreateVGRequest) (*RemoveVGReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveVG not implemented")
+}
+func (*UnimplementedLVMServer) CreatePV(ctx context.Context, req *CreatePVRequest) (*CreatePVReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePV not implemented")
+}
+func (*UnimplementedLVMServer) RemovePV(ctx context.Context, req *RemovePVRequest) (*RemovePVReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemovePV not implemented")
+}
+func (*UnimplementedLVMServer) ExtendVG(ctx context.Context, req *ExtendVGRequest) (*ExtendVGReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExtendVG not implemented")
+}
+func (*UnimplementedLVMServer) ReduceVG(ctx context.Context, req *ExtendVGRequest) (*ExtendVGReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReduceVG not implemented")
+}
+func (*UnimplementedLVMServer) ListPV(ctx context.Context, req *ListPVRequest) (*ListPVReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPV not implemented")
+}
+func (*UnimplementedLVMServer) Match(ctx context.Context, req *MatchRequest) (*MatchReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Match not implemented")
+}
+func (*UnimplementedLVMServer) GetPVNum(ctx context.Context, req *CreateVGRequest) (*GetPVNumReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPVNum not implemented")
+}
+func (*UnimplementedLVMServer) Validate(ctx context.Context, req *ValidateRequest) (*ValidateReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Validate not implemented")
+}
+func (*UnimplementedLVMServer) Destory(ctx context.Context, req *DestoryRequest) (*DestoryReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Destory not implemented")
 }
 
 func RegisterLVMServer(s *grpc.Server, srv LVMServer) {
@@ -1734,6 +2671,24 @@ func _LVM_CloneLV_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LVMServer).CloneLV(ctx, req.(*CloneLVRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_ResizeLV_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResizeLVRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).ResizeLV(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/ResizeLV",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).ResizeLV(ctx, req.(*ResizeLVRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1828,6 +2783,168 @@ func _LVM_RemoveVG_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LVM_CreatePV_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePVRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).CreatePV(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/CreatePV",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).CreatePV(ctx, req.(*CreatePVRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_RemovePV_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemovePVRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).RemovePV(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/RemovePV",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).RemovePV(ctx, req.(*RemovePVRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_ExtendVG_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExtendVGRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).ExtendVG(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/ExtendVG",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).ExtendVG(ctx, req.(*ExtendVGRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_ReduceVG_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExtendVGRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).ReduceVG(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/ReduceVG",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).ReduceVG(ctx, req.(*ExtendVGRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_ListPV_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPVRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).ListPV(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/ListPV",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).ListPV(ctx, req.(*ListPVRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_Match_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MatchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).Match(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/Match",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).Match(ctx, req.(*MatchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_GetPVNum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateVGRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).GetPVNum(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/GetPVNum",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).GetPVNum(ctx, req.(*CreateVGRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_Validate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).Validate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/Validate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).Validate(ctx, req.(*ValidateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LVM_Destory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DestoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LVMServer).Destory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lvm.LVM/Destory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LVMServer).Destory(ctx, req.(*DestoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _LVM_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "lvm.LVM",
 	HandlerType: (*LVMServer)(nil),
@@ -1849,6 +2966,10 @@ var _LVM_serviceDesc = grpc.ServiceDesc{
 			Handler:    _LVM_CloneLV_Handler,
 		},
 		{
+			MethodName: "ResizeLV",
+			Handler:    _LVM_ResizeLV_Handler,
+		},
+		{
 			MethodName: "AddTagLV",
 			Handler:    _LVM_AddTagLV_Handler,
 		},
@@ -1867,6 +2988,42 @@ var _LVM_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveVG",
 			Handler:    _LVM_RemoveVG_Handler,
+		},
+		{
+			MethodName: "CreatePV",
+			Handler:    _LVM_CreatePV_Handler,
+		},
+		{
+			MethodName: "RemovePV",
+			Handler:    _LVM_RemovePV_Handler,
+		},
+		{
+			MethodName: "ExtendVG",
+			Handler:    _LVM_ExtendVG_Handler,
+		},
+		{
+			MethodName: "ReduceVG",
+			Handler:    _LVM_ReduceVG_Handler,
+		},
+		{
+			MethodName: "ListPV",
+			Handler:    _LVM_ListPV_Handler,
+		},
+		{
+			MethodName: "Match",
+			Handler:    _LVM_Match_Handler,
+		},
+		{
+			MethodName: "GetPVNum",
+			Handler:    _LVM_GetPVNum_Handler,
+		},
+		{
+			MethodName: "Validate",
+			Handler:    _LVM_Validate_Handler,
+		},
+		{
+			MethodName: "Destory",
+			Handler:    _LVM_Destory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

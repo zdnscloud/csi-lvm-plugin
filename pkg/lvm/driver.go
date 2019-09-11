@@ -48,7 +48,10 @@ func (lvm *Driver) Run(driverName, nodeID, endpoint string, vgName string, cache
 		log.Fatalf("Failed to initialize CSI Driver.")
 	}
 
-	lvm.driver.AddControllerServiceCapabilities([]csi.ControllerServiceCapability_RPC_Type{csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME})
+	lvm.driver.AddControllerServiceCapabilities([]csi.ControllerServiceCapability_RPC_Type{
+		csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME,
+		csi.ControllerServiceCapability_RPC_EXPAND_VOLUME,
+	})
 	lvm.driver.AddVolumeCapabilityAccessModes([]csi.VolumeCapability_AccessMode_Mode{csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER})
 
 	lvm.ids = NewIdentityServer(lvm.driver)
