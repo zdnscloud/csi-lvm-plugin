@@ -245,6 +245,9 @@ func (cs *controllerServer) ControllerExpandVolume(ctx context.Context, req *csi
 		Name:        volumeId,
 		Size:        uint64(allocateBytes),
 	})
+	if err != nil {
+		return nil, err
+	}
 	log.Infof("ResizeLV: %v", resp)
 
 	return &csi.ControllerExpandVolumeResponse{

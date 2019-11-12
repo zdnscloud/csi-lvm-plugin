@@ -123,7 +123,7 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 		}
 	}
 
-	log.Infof("Determining filesystem type at %v", devicePath)
+	log.Debugf("Determining filesystem type at %v", devicePath)
 	existingFstype, err := determineFilesystemType(devicePath)
 	if err != nil {
 		return nil, status.Errorf(
@@ -131,12 +131,12 @@ func (ns *nodeServer) NodePublishVolume(ctx context.Context, req *csi.NodePublis
 			"Cannot determine filesystem type: err=%v",
 			err)
 	}
-	log.Infof("Existing filesystem type is '%v'", existingFstype)
+	log.Debugf("Existing filesystem type is '%v'", existingFstype)
 	if existingFstype == "" {
 		// There is no existing filesystem on the
 		// device, format it with the requested
 		// filesystem.
-		log.Infof("The device %v has no existing filesystem, formatting with %v", devicePath, DefaultFS)
+		log.Debugf("The device %v has no existing filesystem, formatting with %v", devicePath, DefaultFS)
 		if err := formatDevice(devicePath, DefaultFS); err != nil {
 			return nil, status.Errorf(
 				codes.Internal,

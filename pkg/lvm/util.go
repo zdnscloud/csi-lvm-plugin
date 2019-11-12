@@ -107,7 +107,13 @@ func determineFilesystemType(devicePath string) (string, error) {
 	// has inconvenient output.
 	// We do *not* use `lsblk` as that requires udev to be up-to-date which
 	// is often not the case when a device is erased using `dd`.
-	output, err := exec.Command("file", "-bsL", devicePath).CombinedOutput()
+	output, err := exec.Command("lsblk", "-o", "FSTYPE", "--noheadings", devicePath).CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(string(output)), nil
+
+	output, err = exec.Command("file", "-bsL", devicePath).CombinedOutput()
 	if err != nil {
 		return "", err
 	}
