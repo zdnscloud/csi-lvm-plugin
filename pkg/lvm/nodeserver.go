@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/zdnscloud/gok8s/client"
 	"golang.org/x/net/context"
@@ -184,8 +185,15 @@ func (ns *nodeServer) NodeUnpublishVolume(ctx context.Context, req *csi.NodeUnpu
 		return nil, status.Error(codes.NotFound, "Volume not mounted")
 	}
 
-	err = util.UnmountPath(req.GetTargetPath(), mount.New(""))
+	log.Infof("UnmountPath: %s", targetPath)
+	err = util.UnmountPath(targetPath, mount.New(""))
 	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	parentDir := targetPath[:strings.LastIndex(targetPath, "/")]
+	log.Infof("Remove CSI volume path: %s", parentDir)
+	if err := os.RemoveAll(parentDir); err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
