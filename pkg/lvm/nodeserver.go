@@ -40,17 +40,21 @@ import (
 
 type nodeServer struct {
 	*csicommon.DefaultNodeServer
-	client client.Client
-	nodeID string
-	vgName string
+	client     client.Client
+	nodeID     string
+	vgName     string
+	labelKey   string
+	labelValue string
 }
 
-func NewNodeServer(d *csicommon.CSIDriver, c client.Client, nodeID, vgName string) *nodeServer {
+func NewNodeServer(d *csicommon.CSIDriver, c client.Client, conf *PluginConf) *nodeServer {
 	return &nodeServer{
 		DefaultNodeServer: csicommon.NewDefaultNodeServer(d),
 		client:            c,
-		vgName:            vgName,
-		nodeID:            nodeID,
+		vgName:            conf.VgName,
+		nodeID:            conf.NodeID,
+		labelKey:          conf.LabelKey,
+		labelValue:        conf.LabelValue,
 	}
 }
 

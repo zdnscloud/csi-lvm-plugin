@@ -42,8 +42,8 @@ func NewDriver(client client.Client) *Driver {
 	return &Driver{client: client}
 }
 
-func (lvm *Driver) Run(driverName, nodeID, endpoint string, vgName string, cache cache.Cache) {
-	lvm.driver = csicommon.NewCSIDriver(driverName, vendorVersion, nodeID)
+func (lvm *Driver) Run(cache cache.Cache, conf *PluginConf) {
+	lvm.driver = csicommon.NewCSIDriver(conf.DriverName, vendorVersion, conf.NodeID)
 	if lvm.driver == nil {
 		log.Fatalf("Failed to initialize CSI Driver.")
 	}
@@ -55,10 +55,10 @@ func (lvm *Driver) Run(driverName, nodeID, endpoint string, vgName string, cache
 	lvm.driver.AddVolumeCapabilityAccessModes([]csi.VolumeCapability_AccessMode_Mode{csi.VolumeCapability_AccessMode_SINGLE_NODE_WRITER})
 
 	lvm.ids = NewIdentityServer(lvm.driver)
-	lvm.ns = NewNodeServer(lvm.driver, lvm.client, nodeID, vgName)
-	lvm.cs = NewControllerServer(lvm.driver, lvm.client, vgName, cache)
+	lvm.ns = NewNodeServer(lvm.driver, lvm.client, conf)
+	lvm.cs = NewControllerServer(lvm.driver, lvm.client, cache, conf)
 
 	server := csicommon.NewNonBlockingGRPCServer()
-	server.Start(endpoint, lvm.ids, lvm.cs, lvm.ns)
+	server.Start(conf.Endpoint, lvm.ids, lvm.cs, lvm.ns)
 	server.Wait()
 }

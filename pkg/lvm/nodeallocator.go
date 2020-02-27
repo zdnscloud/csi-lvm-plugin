@@ -40,7 +40,7 @@ type NodeAllocator struct {
 	lvmNodes     *nodemanager.NodeManager
 }
 
-func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
+func NewNodeAllocator(c cache.Cache, vgName, labelKey, labelValue string) *NodeAllocator {
 	rand.Seed(time.Now().Unix())
 
 	ctrl := controller.New("nodeAllocator", c, scheme.Scheme)
@@ -52,7 +52,7 @@ func NewNodeAllocator(c cache.Cache, vgName string) *NodeAllocator {
 	a := &NodeAllocator{
 		stopCh:       stopCh,
 		cache:        c,
-		lvmNodes:     nodemanager.New(c, vgName),
+		lvmNodes:     nodemanager.New(c, vgName, labelKey, labelValue),
 		statefulsets: make(map[string]StatefulSetList),
 		knownPVC:     make(map[k8stypes.UID]*StatefulSet),
 	}

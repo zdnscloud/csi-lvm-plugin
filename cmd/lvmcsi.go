@@ -36,6 +36,9 @@ var (
 	driverName = flag.String("drivername", "k8s-csi-lvm", "name of the driver")
 	nodeID     = flag.String("nodeid", "", "node id")
 	vgName     = flag.String("vgname", "k8s", "volume group name")
+	poolName   = flag.String("poolname", "iscsi-pool", "volume pool name")
+	labelKey   = flag.String("labelKey", "storage.zcloud.cn/storagetype", "storage host label key")
+	labelValue = flag.String("labelValue", "", "storage host label value")
 )
 
 func main() {
@@ -59,7 +62,16 @@ func main() {
 	}
 	go cache.Start(stop)
 	cache.WaitForCacheSync(stop)
+	conf := &lvm.PluginConf{
+		Endpoint:   *endpoint,
+		DriverName: *driverName,
+		NodeID:     *nodeID,
+		VgName:     *vgName,
+		PoolName:   *poolName,
+		LabelKey:   *labelKey,
+		LabelValue: *labelValue,
+	}
 
 	driver := lvm.NewDriver(cli)
-	driver.Run(*driverName, *nodeID, *endpoint, *vgName, cache)
+	driver.Run(cache, conf)
 }

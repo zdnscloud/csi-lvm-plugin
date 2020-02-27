@@ -14,13 +14,13 @@
 
 VERSION=`git describe --tags`
 BUILD=`date +%FT%T%z`
+BRANCH=`git branch | sed -n '/\* /s///p'`
 
 LDFLAGS=-ldflags "-w -s -X main.version=${VERSION} -X main.build=${BUILD}"
 GOSRC = $(shell find . -type f -name '*.go')
 
 REGISTRY_NAME = zdnscloud/lvmcsi
-IMAGE_VERSION = v0.6.3
-VERSION=${IMAGE_VERSION}
+IMAGE_VERSION = latest
 
 .PHONY: all lvm clean
 
@@ -29,11 +29,12 @@ all: lvm
 lvm:
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o ./lvmcsi ./cmd/
 
-lvm-container:
-	docker build -t $(REGISTRY_NAME):$(VERSION) .
+image:
+	docker build -t $(REGISTRY_NAME):$(IMAGE_VERSION) --build-arg version=${VERSION} --build-arg buildtime=${BUILD} .
+	docker image prune -f
 
-push-lvm-container: lvm-container
-	docker push $(REGISTRY_NAME):$(VERSION)
+docker: image
+	docker push $(REGISTRY_NAME):$(IMAGE_VERSION)
 
 clean:
 	go clean -r -x

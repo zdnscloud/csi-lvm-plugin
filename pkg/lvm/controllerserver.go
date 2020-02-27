@@ -48,12 +48,12 @@ type controllerServer struct {
 	allocator *NodeAllocator
 }
 
-func NewControllerServer(d *csicommon.CSIDriver, c client.Client, vgName string, cache cache.Cache) *controllerServer {
+func NewControllerServer(d *csicommon.CSIDriver, c client.Client, cache cache.Cache, conf *PluginConf) *controllerServer {
 	return &controllerServer{
 		DefaultControllerServer: csicommon.NewDefaultControllerServer(d),
 		client:                  c,
-		vgName:                  vgName,
-		allocator:               NewNodeAllocator(cache, vgName),
+		vgName:                  conf.VgName,
+		allocator:               NewNodeAllocator(cache, conf.VgName, conf.LabelKey, conf.LabelValue),
 	}
 }
 

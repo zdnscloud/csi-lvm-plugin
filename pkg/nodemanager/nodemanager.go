@@ -30,9 +30,7 @@ var (
 )
 
 const (
-	ZkeStorageLabel      = "storage.zcloud.cn/storagetype"
-	ZkeStorageLabelValue = "Lvm"
-	ZkeInternalIPAnnKey  = "zdnscloud.cn/internal-ip"
+	ZkeInternalIPAnnKey = "zdnscloud.cn/internal-ip"
 )
 
 type Node struct {
@@ -45,16 +43,18 @@ type Node struct {
 type VGSizeGetter func(string, string) (uint64, uint64, error)
 
 type NodeManager struct {
-	stopCh chan struct{}
-	cache  cache.Cache
-	vgName string
+	stopCh     chan struct{}
+	cache      cache.Cache
+	vgName     string
+	labelKey   string
+	labelValue string
 
 	lock         sync.Mutex
 	nodes        []*Node
 	vgSizeGetter VGSizeGetter //for test
 }
 
-func New(c cache.Cache, vgName string) *NodeManager {
+func New(c cache.Cache, vgName, labelKey, labelValue string) *NodeManager {
 	ctrl := controller.New("lvmNodeManager", c, scheme.Scheme)
 	ctrl.Watch(&corev1.Node{})
 
@@ -63,6 +63,8 @@ func New(c cache.Cache, vgName string) *NodeManager {
 		stopCh:       stopCh,
 		cache:        c,
 		vgName:       vgName,
+		labelKey:     labelKey,
+		labelValue:   labelValue,
 		vgSizeGetter: getSizeInVG,
 	}
 	a.initNodes()
@@ -78,7 +80,7 @@ func (m *NodeManager) initNodes() {
 	}
 
 	for _, n := range nl.Items {
-		if isStorageNode(&n) {
+		if m.isStorageNode(&n) {
 			m.AddNode(&n)
 		}
 	}
@@ -154,7 +156,7 @@ func (m *NodeManager) Release(name string, size uint64) error {
 
 func (m *NodeManager) OnCreate(e event.CreateEvent) (handler.Result, error) {
 	n := e.Object.(*corev1.Node)
-	if isStorageNode(n) && isNodeReady(n) {
+	if m.isStorageNode(n) && isNodeReady(n) {
 		m.AddNode(n)
 	}
 	return handler.Result{}, nil
@@ -190,8 +192,8 @@ func (m *NodeManager) AddNode(k8snode *corev1.Node) {
 func (m *NodeManager) OnUpdate(e event.UpdateEvent) (handler.Result, error) {
 	old := e.ObjectOld.(*corev1.Node)
 	newNode := e.ObjectNew.(*corev1.Node)
-	isOldReady := isStorageNode(old) && isNodeReady(old)
-	isNewReady := isStorageNode(newNode) && isNodeReady(newNode)
+	isOldReady := m.isStorageNode(old) && isNodeReady(old)
+	isNewReady := m.isStorageNode(newNode) && isNodeReady(newNode)
 	if isOldReady != isNewReady {
 		if isNewReady {
 			log.Debugf("detected node %s restore to ready", newNode.Name)
@@ -207,7 +209,7 @@ func (m *NodeManager) OnUpdate(e event.UpdateEvent) (handler.Result, error) {
 
 func (m *NodeManager) OnDelete(e event.DeleteEvent) (handler.Result, error) {
 	n := e.Object.(*corev1.Node)
-	if isStorageNode(n) {
+	if m.isStorageNode(n) {
 		m.DeleteNode(n.Name)
 	}
 	return handler.Result{}, nil
@@ -263,7 +265,7 @@ func isNodeReady(node *corev1.Node) bool {
 	return false
 }
 
-func isStorageNode(n *corev1.Node) bool {
-	v, ok := n.Labels[ZkeStorageLabel]
-	return ok && v == ZkeStorageLabelValue
+func (m *NodeManager) isStorageNode(n *corev1.Node) bool {
+	v, ok := n.Labels[m.labelKey]
+	return ok && v == m.labelValue
 }
